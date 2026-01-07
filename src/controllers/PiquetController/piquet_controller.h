@@ -2,11 +2,11 @@
 #define PIQUET_CONTROLLER_H
 
 #include <Servo.h>
-#include "../MainController/main_controller.h"
-#include "../BaseController/base_controller.h"
-#include "../../state_machines/PiquetStates/piquet_manual_state.h"
-#include "../../state_machines/PiquetStates/piquet_idle_state.h"
-#include "../../state_machines/PiquetStates/piquet_reloading_state.h"
+#include "controllers/MainController/main_controller.h"
+#include "controllers/BaseController/base_controller.h"
+#include "state_machines/PiquetStates/piquet_manual_state.h"
+#include "state_machines/PiquetStates/piquet_idle_state.h"
+#include "state_machines/PiquetStates/piquet_reloading_state.h"
 
 class MainController;
 
@@ -54,12 +54,12 @@ public:
     /**
      * Returns the current angle of the piquet
      */
-    int32_t getCurrentAngle();
+    int16_t getCurrentAngle();
 
     /**
      * Sets the current angle of the piquet
      */
-    void setCurrentAngle(int32_t);
+    void setCurrentAngle(int16_t);
 
     /**
      * Open the piquet stopper
@@ -73,8 +73,8 @@ public:
 
 private:
     MainController *_mainController = nullptr;
-    int32_t _currentPiquetAngle = 0;
-    int32_t _currentStopperAngle = 0;
+    int16_t _currentPiquetAngle = 0;
+    int16_t _currentStopperAngle = 0;
     Servo _stopperServo;
     Servo _piquetServo;
 

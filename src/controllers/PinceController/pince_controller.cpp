@@ -1,4 +1,5 @@
 #include "pince_controller.h"
+#include <utils_debug.h>
 
 void PinceController::initialize(BaseController *controller)
 {
@@ -31,16 +32,18 @@ void PinceController::update()
     this->_pinceDoigtServo2.write(this->_currentPinceDoigtAngle2);
 }
 
-void PinceController::translateVertical(int32_t value)
+void PinceController::translateVertical(int16_t value)
 {
-    int32_t mappedValue = map(value, -1, 1, 0, 255);
+    int16_t mappedValue = map(value, -1, 1, 0, 255);
+    // TODO investiguer pourquoi le map a un range de 0 à 255 alors que la fonction prend un int8_t
 
     CrcLib::SetPwmOutput(PINCE_VERTICAL_DRIVE_PIN, mappedValue);
 }
 
-void PinceController::translateHorizontal(int32_t value)
+void PinceController::translateHorizontal(int16_t value)
 {
-    int32_t mappedValue = map(value, -1, 1, 0, 255);
+    int16_t mappedValue = map(value, -1, 1, 0, 255);
+    // TODO investiguer pourquoi le map a un range de 0 à 255 alors que la fonction prend un int8_t
 
     CrcLib::SetPwmOutput(PINCE_HORIZONTAL_DRIVE_PIN, mappedValue);
 }
@@ -108,22 +111,22 @@ bool PinceController::lowerLimitReached()
     return CrcLib::GetDigitalInput(PINCE_LOWER_LIMIT_SWITCH_PIN) == HIGH;
 }
 
-int32_t PinceController::getCurrentPoignetAngle()
+int16_t PinceController::getCurrentPoignetAngle()
 {
     return this->_currentPincePoignetAngle;
 }
 
-void PinceController::setCurrentPoignetAngle(int32_t angle)
+void PinceController::setCurrentPoignetAngle(int16_t angle)
 {
     this->_currentPincePoignetAngle = angle;
 }
 
-int32_t PinceController::getCurrentFlipAngle()
+int16_t PinceController::getCurrentFlipAngle()
 {
     return this->_currentPinceFlipAngle;
 }
 
-void PinceController::setCurrentFlipAngle(int32_t angle)
+void PinceController::setCurrentFlipAngle(int16_t angle)
 {
     this->_currentPinceFlipAngle = angle;
 }

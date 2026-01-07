@@ -3,8 +3,8 @@
 
 #include <Servo.h>
 #include "pin_mappings.h"
-#include "../../controllers/PiquetController/piquet_controller.h"
-#include "../../state_machines/state.h"
+#include "controllers/PiquetController/piquet_controller.h"
+#include "state_machines/state.h"
 #include "variables.h"
 
 class PiquetController;

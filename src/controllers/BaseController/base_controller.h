@@ -2,7 +2,7 @@
 #define BASE_CONTROLLER_H
 
 #include "Arduino.h"
-#include "../../state_machines/state.h"
+#include "state_machines/state.h"
 
 class BaseController
 {

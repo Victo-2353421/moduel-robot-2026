@@ -1,6 +1,6 @@
 #include "main_controller.h"
 
-void MainController::initialize(BaseController *controller)
+void MainController::initialize([[maybe_unused]]BaseController *controller)
 {
     this->_piquetController = new PiquetController();
     this->_piquetController->initialize(this);
@@ -31,14 +31,24 @@ void MainController::update()
 
 void MainController::handleMove()
 {
-    int32_t forwardChannel = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_Y);
-    int32_t yawChannel = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_X);
-    int32_t strafeChannel = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK2_X);
+    int16_t forwardChannel = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_Y);
+    int16_t yawChannel = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_X);
+    int16_t strafeChannel = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK2_X);
 
-    int32_t frontLeft = constrain(forwardChannel - yawChannel - strafeChannel, -128, MAXIMUM_MOVEMENT_SPEED);
-    int32_t backLeft = constrain(forwardChannel - yawChannel + strafeChannel, -128, MAXIMUM_MOVEMENT_SPEED);
-    int32_t frontRight = constrain(forwardChannel + yawChannel + strafeChannel, -128, MAXIMUM_MOVEMENT_SPEED);
-    int32_t backRight = constrain(forwardChannel + yawChannel - strafeChannel, -128, MAXIMUM_MOVEMENT_SPEED);
+    const auto conversion16a8 = [](int16_t valeur) {
+        const int8_t min = -128;
+        const int8_t max = MAXIMUM_MOVEMENT_SPEED;
+        if(valeur < min)
+            return min;
+        else if(max < valeur)
+            return max;
+        else return static_cast<int8_t>(valeur);
+    };
+
+    int8_t frontLeft = conversion16a8(forwardChannel - yawChannel - strafeChannel);
+    int8_t backLeft = conversion16a8(forwardChannel - yawChannel + strafeChannel);
+    int8_t frontRight = conversion16a8(forwardChannel + yawChannel + strafeChannel);
+    int8_t backRight = conversion16a8(forwardChannel + yawChannel - strafeChannel);
 
     /*Serial.print("> Front left: ");
     Serial.print(frontLeft);
@@ -57,7 +67,7 @@ void MainController::handleMove()
 
 void MainController::checkForStartReloadingSequence()
 {
-    int32_t buttonState = CrcLib::ReadDigitalChannel(RELOAD_KEY);
+    bool buttonState = CrcLib::ReadDigitalChannel(RELOAD_KEY);
     if (buttonState == HIGH && !_startedReloadingSequence)
     {
         this->_startedReloadingSequence = true;

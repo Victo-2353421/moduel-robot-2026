@@ -67,7 +67,7 @@ void PinceManualState::controlHorizontalMovement()
 
 void PinceManualState::controlOpening()
 {
-    int32_t doigt_val = CrcLib::ReadDigitalChannel(CONTROLLER_PINCE_DOIGTS);
+    bool doigt_val = CrcLib::ReadDigitalChannel(CONTROLLER_PINCE_DOIGTS);
 
     uint32_t currentMillis = millis();
     if (currentMillis - this->previousDoigtMillis >= PINCE_POIGNET_DEBOUNCE_TIME)

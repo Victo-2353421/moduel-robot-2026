@@ -2,7 +2,7 @@
 
 void PiquetController::initialize(BaseController *controller)
 {
-    this->_mainController = (MainController *)controller;
+    this->_mainController = static_cast<MainController*>(controller);
 
     this->_piquetServo.attach(PIQUET_ROTATOR_SERVO_PIN);
     this->_stopperServo.attach(PIQUET_STOPPER_SERVO_PIN);
@@ -80,12 +80,12 @@ void PiquetController::setReachedReloading(bool value)
     this->_hasReachedReloading = value;
 }
 
-int32_t PiquetController::getCurrentAngle()
+int16_t PiquetController::getCurrentAngle()
 {
     return this->_currentPiquetAngle;
 }
 
-void PiquetController::setCurrentAngle(int32_t angle)
+void PiquetController::setCurrentAngle(int16_t angle)
 {
     if (angle < PIQUET_IDLE_TARGET_ROTATION) {
         angle = PIQUET_IDLE_TARGET_ROTATION;

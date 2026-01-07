@@ -1,8 +1,8 @@
 #ifndef PIQUET_RELOADING_STATE_H
 #define PIQUET_RELOADING_STATE_H
 
-#include "../../controllers/PiquetController/piquet_controller.h"
-#include "../../state_machines/state.h"
+#include "controllers/PiquetController/piquet_controller.h"
+#include "state_machines/state.h"
 #include "variables.h"
 
 class PiquetController;

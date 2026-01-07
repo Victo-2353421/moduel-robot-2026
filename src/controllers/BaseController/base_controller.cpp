@@ -1,15 +1,14 @@
 #include "base_controller.h"
+#include <utils_debug.h>
 
 void BaseController::initialize(BaseController *controller)
 {
-    Serial.println("BaseController::initialize() not implemented.");
-    exit(1);
+    assert(false, "BaseController::initialize() not implemented");
 }
 
 void BaseController::update()
 {
-    Serial.println("BaseController::update() not implemented.");
-    exit(1);
+    assert(false, "BaseController::update() not implemented");
 }
 
 void BaseController::changeState(State *newState)

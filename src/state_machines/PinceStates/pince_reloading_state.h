@@ -1,8 +1,8 @@
 #ifndef PINCE_RELOADING_STATE_H
 #define PINCE_RELOADING_STATE_H
 
-#include "../../controllers/PinceController/pince_controller.h"
-#include "../../state_machines/state.h"
+#include "controllers/PinceController/pince_controller.h"
+#include "state_machines/state.h"
 #include "variables.h"
 
 class PinceController;

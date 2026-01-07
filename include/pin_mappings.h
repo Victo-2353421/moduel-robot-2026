@@ -3,25 +3,35 @@
 #ifndef PIN_MAPPINGS_H
 #define PIN_MAPPINGS_H
 
+// 6 moteurs
+// 4 pour les roues
+// 2 pour fourches (monter/descendre), 1 contrôle. Elles tournent en sens opposé
+
+// 4 servo
+// 2 pour translation (2 tours à peu près)
+// 2 pour rotation
+
+
 /**
  * Connexions des moteurs omnidirectionnels
  */
-#define FRONT_RIGHT_DRIVE_PIN CRC_PWM_3
-#define BACK_RIGHT_DRIVE_PIN CRC_PWM_2
-#define BACK_LEFT_DRIVE_PIN CRC_PWM_1
-#define FRONT_LEFT_DRIVE_PIN CRC_PWM_4
+constexpr uint8_t FRONT_RIGHT_DRIVE_PIN = CRC_PWM_3;
+constexpr uint8_t BACK_RIGHT_DRIVE_PIN = CRC_PWM_2;
+constexpr uint8_t BACK_LEFT_DRIVE_PIN = CRC_PWM_1;
+constexpr uint8_t FRONT_LEFT_DRIVE_PIN = CRC_PWM_4;
 
-#define FRONT_LEFT_MULTIPLIER 1.8
-#define MAXIMUM_MOVEMENT_SPEED 90
+constexpr int8_t MAXIMUM_MOVEMENT_SPEED = 90;
+
+//en dessous à changer
 
 /**
  * Connexions du piquet
  */
-#define PIQUET_ROTATOR_SERVO_PIN CRC_PWM_11
-#define PIQUET_STOPPER_SERVO_PIN CRC_PWM_12
+constexpr uint8_t PIQUET_ROTATOR_SERVO_PIN = CRC_PWM_11;
+constexpr uint8_t PIQUET_STOPPER_SERVO_PIN = CRC_PWM_12;
 
-#define PIQUET_IDLE_TARGET_ROTATION 0
-#define PIQUET_RELOADING_TARGET_ROTATION 140
+constexpr int32_t PIQUET_IDLE_TARGET_ROTATION = 0;
+constexpr int32_t PIQUET_RELOADING_TARGET_ROTATION = 140;
 #define PIQUET_SPEED 15
 #define PIQUET_MANUAL_ROTATOR_DELAY 1000
 #define PIQUET_MANUAL_STOPPER_DELAY 500
@@ -30,29 +40,29 @@
 /**
  * Connexions de la pince
  */
-#define PINCE_VERTICAL_DRIVE_PIN CRC_PWM_5
-#define PINCE_HORIZONTAL_DRIVE_PIN CRC_PWM_6
-#define PINCE_DOIGT_SERVO_1_PIN CRC_PWM_7
-#define PINCE_DOIGT_SERVO_2_PIN CRC_PWM_8
-#define PINCE_POIGNET_SERVO_PIN CRC_PWM_9
-#define PINCE_FLIP_SERVO_PIN CRC_PWM_10
+constexpr uint8_t PINCE_VERTICAL_DRIVE_PIN = CRC_PWM_5;
+constexpr uint8_t PINCE_HORIZONTAL_DRIVE_PIN = CRC_PWM_6;
+constexpr uint8_t PINCE_DOIGT_SERVO_1_PIN = CRC_PWM_7;
+constexpr uint8_t PINCE_DOIGT_SERVO_2_PIN = CRC_PWM_8;
+constexpr uint8_t PINCE_POIGNET_SERVO_PIN = CRC_PWM_9;
+constexpr uint8_t PINCE_FLIP_SERVO_PIN = CRC_PWM_10;
 
-#define PINCE_UPPER_LIMIT_SWITCH_PIN CRC_DIG_1
-#define PINCE_LOWER_LIMIT_SWITCH_PIN CRC_DIG_2
-#define PINCE_LEFT_LIMIT_SWITCH_PIN CRC_DIG_9
-#define PINCE_RIGHT_LIMIT_SWITCH_PIN CRC_DIG_10
-#define PINCE_VERTICAL_RELOAD_LIMIT_SWITCH_PIN CRC_DIG_11
-#define PINCE_HORIZONTAL_RELOAD_LIMIT_SWITCH_PIN CRC_DIG_12
+constexpr uint8_t PINCE_UPPER_LIMIT_SWITCH_PIN = CRC_DIG_1;
+constexpr uint8_t PINCE_LOWER_LIMIT_SWITCH_PIN = CRC_DIG_2;
+constexpr uint8_t PINCE_LEFT_LIMIT_SWITCH_PIN = CRC_DIG_9;
+constexpr uint8_t PINCE_RIGHT_LIMIT_SWITCH_PIN = CRC_DIG_10;
+constexpr uint8_t PINCE_VERTICAL_RELOAD_LIMIT_SWITCH_PIN = CRC_DIG_11;
+constexpr uint8_t PINCE_HORIZONTAL_RELOAD_LIMIT_SWITCH_PIN = CRC_DIG_12;
 
-#define PINCE_FLIP_MIN_ANGLE 0
-#define PINCE_FLIP_IDLE_ANGLE 80
-#define PINCE_FLIP_MAX_ANGLE 180
-#define PINCE_FLIP_MANUAL_DELAY 1000
-#define PINCE_FLIP_SPEED 40
-#define PINCE_FLIP_DROP_DELAY 5000
+constexpr int32_t PINCE_FLIP_MIN_ANGLE = 0;
+constexpr int32_t PINCE_FLIP_IDLE_ANGLE = 80;
+constexpr int32_t PINCE_FLIP_MAX_ANGLE = 180;
+constexpr uint32_t PINCE_FLIP_MANUAL_DELAY = 1000;
+constexpr uint32_t PINCE_FLIP_SPEED = 40;
+constexpr uint32_t PINCE_FLIP_DROP_DELAY = 5000;
 
-#define PINCE_DOIGT_IDLE_ANGLE 45
-#define PINCE_DOIGT_MAX_ANGLE 180
+constexpr int32_t PINCE_DOIGT_IDLE_ANGLE = 45;
+constexpr int32_t PINCE_DOIGT_MAX_ANGLE = 180;
 
 constexpr int16_t PINCE_POIGNET_MIN_ANGLE = 0;
 constexpr int16_t PINCE_POIGNET_IDLE_ANGLE = 90;
@@ -62,7 +72,7 @@ constexpr int16_t PINCE_POIGNET_DEBOUNCE_TIME = 250;
 /**
  * Connexions du propulseur
  */
-#define PROPULSEUR_MOTOR_PIN CRC_DIG_7
+constexpr uint8_t PROPULSEUR_MOTOR_PIN = CRC_DIG_7;
 
 /**
  * Mappings de la manette
