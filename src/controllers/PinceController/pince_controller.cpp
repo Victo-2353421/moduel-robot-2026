@@ -1,4 +1,5 @@
 #include "pince_controller.h"
+#include "utils_math.h"
 #include <utils_debug.h>
 
 void PinceController::initialize(BaseController *controller)
@@ -34,7 +35,7 @@ void PinceController::update()
 
 void PinceController::translateVertical(int16_t value)
 {
-    int16_t mappedValue = map(value, -1, 1, 0, 255);
+    int16_t mappedValue = m::map<int16_t>(value, -1, 1, 0, 255);
     // TODO investiguer pourquoi le map a un range de 0 à 255 alors que la fonction prend un int8_t
 
     CrcLib::SetPwmOutput(PINCE_VERTICAL_DRIVE_PIN, mappedValue);
@@ -42,7 +43,7 @@ void PinceController::translateVertical(int16_t value)
 
 void PinceController::translateHorizontal(int16_t value)
 {
-    int16_t mappedValue = map(value, -1, 1, 0, 255);
+    int16_t mappedValue = m::map<int16_t>(value, -1, 1, 0, 255);
     // TODO investiguer pourquoi le map a un range de 0 à 255 alors que la fonction prend un int8_t
 
     CrcLib::SetPwmOutput(PINCE_HORIZONTAL_DRIVE_PIN, mappedValue);
