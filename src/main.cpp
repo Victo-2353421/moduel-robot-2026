@@ -1,5 +1,8 @@
+#include <CrcLib.h>
+
+#include "pin_mappings.h"
+
 #include "controllers/MainController/main_controller.h"
-#include "CrcLib.h"
 
 static_assert(sizeof(char) == 1);
 static_assert(sizeof(short) == 2);
@@ -7,42 +10,33 @@ static_assert(sizeof(int) == 2);
 static_assert(sizeof(long) == 4);
 static_assert(sizeof(long long) == 8);
 
-MainController *mainController = nullptr;
+MainController mainController;
+
+static uint32_t microSecs{};
 
 void setup()
 {
     CrcLib::Initialize(true);
 
-    // Initialize movement
-    CrcLib::InitializePwmOutput(FRONT_RIGHT_DRIVE_PIN);
-    CrcLib::InitializePwmOutput(BACK_RIGHT_DRIVE_PIN, true);
-    CrcLib::InitializePwmOutput(BACK_LEFT_DRIVE_PIN);
-    CrcLib::InitializePwmOutput(FRONT_LEFT_DRIVE_PIN, true);
+    CrcLib::InitializePwmOutput(ROUE_AVANT_GAUCHE_PIN, true);
+    CrcLib::InitializePwmOutput(ROUE_AVANT_DROITE_PIN);
+    CrcLib::InitializePwmOutput(ROUE_ARRIERE_GAUCHE_PIN);
+    CrcLib::InitializePwmOutput(ROUE_ARRIERE_DROITE_PIN, true);
+    
+    CrcLib::InitializePwmOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN);
+    CrcLib::InitializePwmOutput(ANGLE_FOURCHE_DROITE_SERVO_PIN);
 
-    // Initialize pince servos
-    CrcLib::InitializePwmOutput(PINCE_VERTICAL_DRIVE_PIN);
-    CrcLib::InitializePwmOutput(PINCE_HORIZONTAL_DRIVE_PIN, true);
-    
-    // Initialize limit switches
-    CrcLib::SetDigitalPinMode(PINCE_UPPER_LIMIT_SWITCH_PIN, INPUT);
-    CrcLib::SetDigitalPinMode(PINCE_LOWER_LIMIT_SWITCH_PIN, INPUT);
-    CrcLib::SetDigitalPinMode(PINCE_LEFT_LIMIT_SWITCH_PIN, INPUT);
-    CrcLib::SetDigitalPinMode(PINCE_RIGHT_LIMIT_SWITCH_PIN, INPUT);
-    CrcLib::SetDigitalPinMode(PINCE_VERTICAL_RELOAD_LIMIT_SWITCH_PIN, INPUT);
-    CrcLib::SetDigitalPinMode(PINCE_HORIZONTAL_RELOAD_LIMIT_SWITCH_PIN, INPUT);
-    
-    // Initialize propulseur
-    CrcLib::SetDigitalPinMode(PROPULSEUR_MOTOR_PIN, OUTPUT);
-    
     Serial.begin(9600);
-    mainController = new MainController();
-    mainController->initialize();
+    microSecs = micros();
 }
 
 void loop()
 {
     CrcLib::Update();
-
+    const uint32_t microSecsPrecedant = microSecs;
+    microSecs = micros();
+    const uint32_t deltaTime = microSecs - microSecsPrecedant;
+    
     if (!CrcLib::IsCommValid())
     {
         Serial.println("Waiting for controller connection...");
@@ -50,5 +44,19 @@ void loop()
         return;
     }
 
-    mainController->update();
+    Actions actions;
+    actions.avant = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_Y);
+    actions.yaw = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_X);
+    actions.strafe = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK2_X);
+
+    actions.rotationFourchesHaut = CrcLib::ReadDigitalChannel(BUTTON::COLORS_LEFT);
+    actions.rotationFourchesBas = CrcLib::ReadDigitalChannel(BUTTON::COLORS_DOWN);
+
+    actions.translationFourchesGauche = CrcLib::ReadDigitalChannel(BUTTON::L1);
+    actions.translationFourchesDroite = CrcLib::ReadDigitalChannel(BUTTON::R1);
+    
+    actions.ouvrirFourches = CrcLib::ReadDigitalChannel(BUTTON::COLORS_RIGHT);
+    actions.fermerFourches = CrcLib::ReadDigitalChannel(BUTTON::COLORS_UP);
+
+    mainController.update(actions, deltaTime);
 }
