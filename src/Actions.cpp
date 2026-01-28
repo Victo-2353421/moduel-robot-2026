@@ -26,12 +26,14 @@ void Actions::print() {
     Serial.print("strafe : ");
     Serial.println(strafe);
 
-    Serial.print(rotationFourchesHaut ? "X" : " ") ;
-    Serial.print(rotationFourchesBas ? "A" : " ") ;
-    Serial.print(translationFourchesGauche ? "G" : " ") ;
-    Serial.print(translationFourchesDroite ? "D" : " ") ;
-    Serial.print(ouvrirFourches ? "B" : " ") ;
-    Serial.print(fermerFourches ? "Y" : " ") ;
+    Serial.print(rotationFourchesHaut ? "X" : " ");
+    Serial.print(rotationFourchesBas ? "A" : " ");
+
+    Serial.print(translationFourchesGauche ? "G" : " ");
+    Serial.print(translationFourchesDroite ? "D" : " ");
+
+    Serial.print(ouvrirFourches ? "B" : " ");
+    Serial.print(fermerFourches ? "Y" : " ");
 
     Serial.println("");
 }
