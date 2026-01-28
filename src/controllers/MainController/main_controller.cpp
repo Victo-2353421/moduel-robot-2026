@@ -1,8 +1,6 @@
-#include "main_controller.h"
+#include "main_controller.hpp"
 
 #include <CrcLib.h>
-
-#include "pin_mappings.h"
 
 static constexpr uint32_t MICROSECONDES_PAR_SECONDE = 1000000;
 

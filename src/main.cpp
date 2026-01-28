@@ -1,8 +1,9 @@
 #include <CrcLib.h>
 
-#include "pin_mappings.h"
+#include "pin_mappings.hpp"
+#include "actions.hpp"
 
-#include "controllers/MainController/main_controller.h"
+#include "controllers/MainController/main_controller.hpp"
 
 static_assert(sizeof(char) == 1);
 static_assert(sizeof(short) == 2);
@@ -44,19 +45,7 @@ void loop()
         return;
     }
 
-    Actions actions;
-    actions.avant = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_Y);
-    actions.yaw = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_X);
-    actions.strafe = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK2_X);
-
-    actions.rotationFourchesHaut = CrcLib::ReadDigitalChannel(BUTTON::COLORS_LEFT);
-    actions.rotationFourchesBas = CrcLib::ReadDigitalChannel(BUTTON::COLORS_DOWN);
-
-    actions.translationFourchesGauche = CrcLib::ReadDigitalChannel(BUTTON::L1);
-    actions.translationFourchesDroite = CrcLib::ReadDigitalChannel(BUTTON::R1);
-    
-    actions.ouvrirFourches = CrcLib::ReadDigitalChannel(BUTTON::COLORS_RIGHT);
-    actions.fermerFourches = CrcLib::ReadDigitalChannel(BUTTON::COLORS_UP);
+    const auto actions = Actions::lire();
 
     mainController.update(actions, deltaTime);
 }

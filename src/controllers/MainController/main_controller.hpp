@@ -1,7 +1,8 @@
 #ifndef MAIN_CONTROLLER_H
 #define MAIN_CONTROLLER_H
 
-#include "pin_mappings.h"
+#include "Actions.hpp"
+#include "pin_mappings.hpp"
 
 class MainController
 {

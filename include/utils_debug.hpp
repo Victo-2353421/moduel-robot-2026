@@ -1,3 +1,6 @@
+#ifndef UTILS_DEBUG_HPP
+#define UTILS_DEBUG_HPP
+
 #define XSTRING_UTIL__(a) STRING_UTIL__(a)
 #define STRING_UTIL__(a) #a
 
@@ -21,3 +24,5 @@ namespace utils {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 }
+
+#endif // UTILS_DEBUG_HPP
