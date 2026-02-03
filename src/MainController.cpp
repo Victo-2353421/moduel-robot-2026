@@ -44,8 +44,8 @@ void MainController::gererRotationFourches(const Actions &actions)
 {
     const int8_t rotation = actions.rotationFourches;
 
-    CrcLib::SetDigitalOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN, rotation);
-    CrcLib::SetDigitalOutput(ANGLE_FOURCHE_DROITE_SERVO_PIN, rotation);
+    CrcLib::SetPwmOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN, rotation);
+    CrcLib::SetPwmOutput(ANGLE_FOURCHE_DROITE_SERVO_PIN, rotation);
 }
 
 void MainController::gererOuvertureFourches(const Actions &actions)
