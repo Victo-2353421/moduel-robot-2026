@@ -51,7 +51,7 @@ void loop()
         return;
     }
 
-    const auto actions = Actions::lire();
+    const auto actions = Actions::lire(deltaTime);
 
     mainController.update(actions, deltaTime);
 }

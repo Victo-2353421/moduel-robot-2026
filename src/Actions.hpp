@@ -8,16 +8,13 @@ struct Actions {
     int8_t yaw{};
     int8_t strafe{};
 
-    int8_t monter{};
-    int8_t descendre{};
+    int8_t translation{};
 
-    bool rotationFourchesHaut{};
-    bool rotationFourchesBas{};
+    int8_t rotationFourches{};
 
-    bool ouvrirFourches{};
-    bool fermerFourches{};
+    int8_t ouvertureFourches{};
 
-    static Actions lire();
+    static Actions lire(uint32_t deltaTime);
 
     void print();
 };

@@ -21,7 +21,18 @@ namespace utils {
 template<typename T>
 T map(T x, T in_min, T in_max, T out_min, T out_max)
 {
-return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+static constexpr uint32_t MICROSECONDES_PAR_SECONDE = 1000000;
+
+template<typename T, typename U>
+static U conversionClamp(T valeur, U min, U max) {
+    if(valeur < min)
+        return min;
+    else if(max < valeur)
+        return max;
+    else return static_cast<U>(valeur);
 }
 
 } // namespace utils
