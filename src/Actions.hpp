@@ -8,11 +8,11 @@ struct Actions {
     int8_t yaw{};
     int8_t strafe{};
 
+    int8_t monter{};
+    int8_t descendre{};
+
     bool rotationFourchesHaut{};
     bool rotationFourchesBas{};
-
-    bool translationFourchesGauche{};
-    bool translationFourchesDroite{};
 
     bool ouvrirFourches{};
     bool fermerFourches{};
