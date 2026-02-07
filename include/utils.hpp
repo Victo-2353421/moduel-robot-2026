@@ -1,5 +1,5 @@
-#ifndef UTILS_DEBUG_HPP
-#define UTILS_DEBUG_HPP
+#ifndef UTILS_HPP
+#define UTILS_HPP
 
 #include "config.hpp"
 
@@ -52,4 +52,4 @@ static U conversionClamp(T valeur, U min, U max) {
     #define PRINT(a)
 #endif
 
-#endif // UTILS_DEBUG_HPP
+#endif // UTILS_HPP
