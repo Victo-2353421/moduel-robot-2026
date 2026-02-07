@@ -101,36 +101,36 @@ struct ControleManette {
     }
 
     void print() const{
-        Serial.print("joystick1x : ");
-        Serial.println(joystick1x);
-        Serial.print("joystick1y : ");
-        Serial.println(joystick1y);
-        Serial.print("joystick2x : ");
-        Serial.println(joystick2x);
-        
-        Serial.print("gachetteGauche : ");
-        Serial.println(gachetteGauche);
-        Serial.print("gachetteDroite : ");
-        Serial.println(gachetteDroite);
+        PRINT("joystick1x : ");
+        PRINTLN(joystick1x);
+        PRINT("joystick1y : ");
+        PRINTLN(joystick1y);
+        PRINT("joystick2x : ");
+        PRINTLN(joystick2x);
+
+        PRINT("gachetteGauche : ");
+        PRINTLN(gachetteGauche);
+        PRINT("gachetteDroite : ");
+        PRINTLN(gachetteDroite);
 
         if(tempsDepuisDernierAppuieA) {
-            Serial.print("A : ");
-            Serial.println(tempsDepuisDernierAppuieA);
+            PRINT("A : ");
+            PRINTLN(tempsDepuisDernierAppuieA);
         }
         if(tempsDepuisDernierAppuieB) {
-            Serial.print("B : ");
-            Serial.println(tempsDepuisDernierAppuieB);
+            PRINT("B : ");
+            PRINTLN(tempsDepuisDernierAppuieB);
         }
         if(tempsDepuisDernierAppuieX) {
-            Serial.print("X : ");
-            Serial.println(tempsDepuisDernierAppuieX);
+            PRINT("X : ");
+            PRINTLN(tempsDepuisDernierAppuieX);
         }
         if(tempsDepuisDernierAppuieY) {
-            Serial.print("Y : ");
-            Serial.println(tempsDepuisDernierAppuieY);
+            PRINT("Y : ");
+            PRINTLN(tempsDepuisDernierAppuieY);
         }
 
-        Serial.println("");
+        PRINTLN("");
     }
 };
 
@@ -144,7 +144,7 @@ Actions Actions::lire(uint32_t deltaTime)
     actions.avant = controleManette.joystick1y;
     actions.yaw = controleManette.joystick2x;
     actions.strafe = controleManette.joystick1x;
-    
+
     actions.translation = utils::conversionClamp<int16_t, int8_t>(
         controleManette.gachetteDroite - controleManette.gachetteGauche,
         -128,
@@ -158,7 +158,7 @@ Actions Actions::lire(uint32_t deltaTime)
     } else {
         actions.rotationFourches = 0;
     }
-    
+
     if(controleManette.b && !controleManette.y) {
         actions.ouvertureFourches = controleOuvertureFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieB);
     } else if(!controleManette.b && controleManette.y) {
@@ -172,21 +172,21 @@ Actions Actions::lire(uint32_t deltaTime)
 }
 
 void Actions::print() const{
-    Serial.print("avant             : ");
-    Serial.println(avant);
-    Serial.print("yaw               : ");
-    Serial.println(yaw);
-    Serial.print("strafe            : ");
-    Serial.println(strafe);
-    
-    Serial.print("translation       : ");
-    Serial.println(translation);
+    PRINT("avant             : ");
+    PRINTLN(avant);
+    PRINT("yaw               : ");
+    PRINTLN(yaw);
+    PRINT("strafe            : ");
+    PRINTLN(strafe);
 
-    Serial.print("rotationFourches  : ");
-    Serial.println(rotationFourches);
+    PRINT("translation       : ");
+    PRINTLN(translation);
 
-    Serial.print("ouvertureFourches : ");
-    Serial.println(ouvertureFourches);
+    PRINT("rotationFourches  : ");
+    PRINTLN(rotationFourches);
 
-    Serial.println("");
+    PRINT("ouvertureFourches : ");
+    PRINTLN(ouvertureFourches);
+
+    PRINTLN("");
 }

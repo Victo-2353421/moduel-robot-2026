@@ -2,7 +2,7 @@
 #define MAIN_CONTROLLER_H
 
 #include "Actions.hpp"
-#include "pin_mappings.hpp"
+#include "config.hpp"
 
 class MainController
 {

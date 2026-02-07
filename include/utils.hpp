@@ -1,6 +1,8 @@
 #ifndef UTILS_DEBUG_HPP
 #define UTILS_DEBUG_HPP
 
+#include "config.hpp"
+
 #define XSTRING_UTIL__(a) STRING_UTIL__(a)
 #define STRING_UTIL__(a) #a
 
@@ -38,5 +40,16 @@ static U conversionClamp(T valeur, U min, U max) {
 }
 
 } // namespace utils
+
+
+#ifdef SERIAL_ENABLE
+    #define SERIAL_BEGIN() Serial.begin(9600)
+    #define PRINTLN(a) Serial.println(a)
+    #define PRINT(a) Serial.print(a)
+#else
+    #define SERIAL_BEGIN()
+    #define PRINTLN(a)
+    #define PRINT(a)
+#endif
 
 #endif // UTILS_DEBUG_HPP
