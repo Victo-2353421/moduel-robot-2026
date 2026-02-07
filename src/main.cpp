@@ -21,11 +21,10 @@ void setup()
 
     CrcLib::InitializePwmOutput(ROUE_AVANT_GAUCHE_PIN, true);
     CrcLib::InitializePwmOutput(ROUE_AVANT_DROITE_PIN);
-    CrcLib::InitializePwmOutput(ROUE_ARRIERE_GAUCHE_PIN);
-    CrcLib::InitializePwmOutput(ROUE_ARRIERE_DROITE_PIN, true);
+    CrcLib::InitializePwmOutput(ROUE_ARRIERE_GAUCHE_PIN, true);
+    CrcLib::InitializePwmOutput(ROUE_ARRIERE_DROITE_PIN);
     
-    CrcLib::InitializePwmOutput(TRANSLATION_MONTER_PIN);
-    CrcLib::InitializePwmOutput(TRANSLATION_DESCENDRE_PIN);
+    CrcLib::InitializePwmOutput(TRANSLATION_PIN);
     
     CrcLib::InitializePwmOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN);
     CrcLib::InitializePwmOutput(ANGLE_FOURCHE_DROITE_SERVO_PIN);

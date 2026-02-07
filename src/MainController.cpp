@@ -2,10 +2,11 @@
 
 #include <CrcLib.h>
 
-#include <utils.hpp>
+#include "utils.hpp"
 
 void MainController::update(const Actions& actions, uint32_t deltaTime)
 {
+    //actions.print();
     (void)deltaTime;
     this->gererMouvement(actions);
     this->gererTranslation(actions);
@@ -36,8 +37,7 @@ void MainController::gererTranslation(const Actions &actions)
 {
     const int8_t translation = actions.translation;
     
-    CrcLib::SetPwmOutput(TRANSLATION_MONTER_PIN, translation);
-    CrcLib::SetPwmOutput(TRANSLATION_DESCENDRE_PIN, -translation);
+    CrcLib::SetPwmOutput(TRANSLATION_PIN, translation);
 }
 
 void MainController::gererRotationFourches(const Actions &actions)

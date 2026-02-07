@@ -16,12 +16,11 @@
  * Connexions des moteurs omnidirectionnels
  */
 constexpr uint8_t ROUE_AVANT_GAUCHE_PIN = CRC_PWM_1;
-constexpr uint8_t ROUE_AVANT_DROITE_PIN = CRC_PWM_2;
-constexpr uint8_t ROUE_ARRIERE_GAUCHE_PIN = CRC_PWM_3;
-constexpr uint8_t ROUE_ARRIERE_DROITE_PIN = CRC_PWM_4;
+constexpr uint8_t ROUE_AVANT_DROITE_PIN = CRC_PWM_4;
+constexpr uint8_t ROUE_ARRIERE_GAUCHE_PIN = CRC_PWM_2;
+constexpr uint8_t ROUE_ARRIERE_DROITE_PIN = CRC_PWM_3;
 
-constexpr uint8_t TRANSLATION_MONTER_PIN = CRC_PWM_5;
-constexpr uint8_t TRANSLATION_DESCENDRE_PIN = CRC_PWM_6;
+constexpr uint8_t TRANSLATION_PIN = CRC_PWM_5;
 
 constexpr uint8_t ANGLE_FOURCHE_GAUCHE_SERVO_PIN = CRC_PWM_7;
 constexpr uint8_t ANGLE_FOURCHE_DROITE_SERVO_PIN = CRC_PWM_8;

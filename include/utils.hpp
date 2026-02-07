@@ -28,9 +28,11 @@ static constexpr uint32_t MICROSECONDES_PAR_SECONDE = 1000000;
 
 template<typename T, typename U>
 static U conversionClamp(T valeur, U min, U max) {
-    if(valeur < min)
+    static_assert(sizeof(T) < 8);
+    static_assert(sizeof(U) < 8);
+    if(static_cast<int64_t>(valeur) < static_cast<int64_t>(min))
         return min;
-    else if(max < valeur)
+    else if(static_cast<int64_t>(max) < static_cast<int64_t>(valeur))
         return max;
     else return static_cast<U>(valeur);
 }

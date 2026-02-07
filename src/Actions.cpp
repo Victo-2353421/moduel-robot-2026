@@ -3,14 +3,49 @@
 #include "utils.hpp"
 
 struct ControleVitesse {
-    int8_t minVitesse = -128;
-    int8_t maxVitesse = 127;
-    int8_t derniereVitesse = 0;
-    const int8_t acceleration = 127;
+    int8_t minVitesse;
+    int8_t maxVitesse;
+    int8_t derniereVitesse;
+    float acceleration;
+    float debutAcceleration;
+
+    constexpr ControleVitesse(
+        int8_t minVitesse,
+        int8_t maxVitesse,
+        int8_t derniereVitesse,
+        float acceleration,
+        float debutAcceleration
+    )
+      : minVitesse(minVitesse)
+      , maxVitesse(maxVitesse)
+      , derniereVitesse(derniereVitesse)
+      , acceleration(acceleration)
+      , debutAcceleration(debutAcceleration) {}
+
+    int8_t obtenirVitesse(uint32_t tempsAppuie) const{
+        return utils::conversionClamp<float, int8_t>(
+            ceilf(static_cast<float>(tempsAppuie) / static_cast<float>(utils::MICROSECONDES_PAR_SECONDE))
+                * acceleration + debutAcceleration,
+            minVitesse,
+            maxVitesse
+        );
+    }
 };
 
-static ControleVitesse controleRotationFourches;
-static ControleVitesse controleOuvertureFourches;
+constexpr static ControleVitesse controleRotationFourches{
+    -128,
+    127,
+    0,
+    1270.0f,
+    0.0f,
+};
+constexpr static ControleVitesse controleOuvertureFourches{
+    -128,
+    127,
+    0,
+    64.0f,
+    8.0f,
+};
 
 struct ControleManette {
     int8_t joystick1x = 0;
@@ -32,6 +67,7 @@ struct ControleManette {
     void lire(uint32_t deltaTime) {
         joystick1x = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_X);
         joystick1y = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_Y);
+        if(joystick1y == -1) joystick1y = 0; // correction fucké de la précision.
         joystick2x = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK2_X);
 
         const int8_t gachetteGaucheLecture = CrcLib::ReadAnalogChannel(ANALOG::GACHETTE_L);
@@ -64,7 +100,7 @@ struct ControleManette {
             tempsDepuisDernierAppuieY = 0;
     }
 
-    void print() {
+    void print() const{
         Serial.print("joystick1x : ");
         Serial.println(joystick1x);
         Serial.print("joystick1y : ");
@@ -77,14 +113,22 @@ struct ControleManette {
         Serial.print("gachetteDroite : ");
         Serial.println(gachetteDroite);
 
-        Serial.print("A : ");
-        if(tempsDepuisDernierAppuieA) Serial.println(tempsDepuisDernierAppuieA);
-        Serial.print("B : ");
-        if(tempsDepuisDernierAppuieB) Serial.println(tempsDepuisDernierAppuieB);
-        Serial.print("X : ");
-        if(tempsDepuisDernierAppuieX) Serial.println(tempsDepuisDernierAppuieX);
-        Serial.print("Y : ");
-        if(tempsDepuisDernierAppuieY) Serial.println(tempsDepuisDernierAppuieY);
+        if(tempsDepuisDernierAppuieA) {
+            Serial.print("A : ");
+            Serial.println(tempsDepuisDernierAppuieA);
+        }
+        if(tempsDepuisDernierAppuieB) {
+            Serial.print("B : ");
+            Serial.println(tempsDepuisDernierAppuieB);
+        }
+        if(tempsDepuisDernierAppuieX) {
+            Serial.print("X : ");
+            Serial.println(tempsDepuisDernierAppuieX);
+        }
+        if(tempsDepuisDernierAppuieY) {
+            Serial.print("Y : ");
+            Serial.println(tempsDepuisDernierAppuieY);
+        }
 
         Serial.println("");
     }
@@ -94,11 +138,12 @@ Actions Actions::lire(uint32_t deltaTime)
 {
     static ControleManette controleManette;
     controleManette.lire(deltaTime);
+    //controleManette.print();
     Actions actions;
 
     actions.avant = controleManette.joystick1y;
-    actions.yaw = controleManette.joystick1x;
-    actions.strafe = controleManette.joystick2x;
+    actions.yaw = controleManette.joystick2x;
+    actions.strafe = controleManette.joystick1x;
     
     actions.translation = utils::conversionClamp<int16_t, int8_t>(
         controleManette.gachetteDroite - controleManette.gachetteGauche,
@@ -107,41 +152,26 @@ Actions Actions::lire(uint32_t deltaTime)
     );
 
     if(controleManette.x && !controleManette.a) {
-        actions.rotationFourches = utils::conversionClamp<uint32_t, int8_t>(
-            (controleManette.tempsDepuisDernierAppuieX / utils::MICROSECONDES_PAR_SECONDE) * controleRotationFourches.acceleration,
-            controleRotationFourches.minVitesse,
-            controleRotationFourches.maxVitesse
-        );
+        actions.rotationFourches = controleRotationFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieX);
     } else if(!controleManette.x && controleManette.a) {
-        actions.rotationFourches = utils::conversionClamp<uint32_t, int8_t>(
-            -(controleManette.tempsDepuisDernierAppuieA / utils::MICROSECONDES_PAR_SECONDE) * controleRotationFourches.acceleration,
-            controleRotationFourches.minVitesse,
-            controleRotationFourches.maxVitesse
-        );
+        actions.rotationFourches = -controleRotationFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieA);
     } else {
         actions.rotationFourches = 0;
     }
     
     if(controleManette.b && !controleManette.y) {
-        actions.ouvertureFourches = utils::conversionClamp<uint32_t, int8_t>(
-            (controleManette.tempsDepuisDernierAppuieB / utils::MICROSECONDES_PAR_SECONDE) * controleOuvertureFourches.acceleration,
-            controleOuvertureFourches.minVitesse,
-            controleOuvertureFourches.maxVitesse
-        );
+        actions.ouvertureFourches = controleOuvertureFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieB);
     } else if(!controleManette.b && controleManette.y) {
-        actions.ouvertureFourches = utils::conversionClamp<uint32_t, int8_t>(
-            -(controleManette.tempsDepuisDernierAppuieY / utils::MICROSECONDES_PAR_SECONDE) * controleOuvertureFourches.acceleration,
-            controleOuvertureFourches.minVitesse,
-            controleOuvertureFourches.maxVitesse
-        );
+        actions.ouvertureFourches = -controleOuvertureFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieY);
     } else {
         actions.ouvertureFourches = 0;
     }
+    //CrcLib::SetPwmOutput(CRC_PWM_10, actions.ouvertureFourches);
 
     return actions;
 }
 
-void Actions::print() {
+void Actions::print() const{
     Serial.print("avant             : ");
     Serial.println(avant);
     Serial.print("yaw               : ");

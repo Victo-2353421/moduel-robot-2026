@@ -16,7 +16,7 @@ struct Actions {
 
     static Actions lire(uint32_t deltaTime);
 
-    void print();
+    void print() const;
 };
 
 #endif // ACTIONS_HPP
