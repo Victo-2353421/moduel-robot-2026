@@ -101,36 +101,36 @@ struct ControleManette {
     }
 
     void print() const{
-        PRINT("joystick1x : ");
-        PRINTLN(joystick1x);
-        PRINT("joystick1y : ");
-        PRINTLN(joystick1y);
-        PRINT("joystick2x : ");
-        PRINTLN(joystick2x);
+        SERIAL_PRINT("joystick1x : ");
+        SERIAL_PRINTLN(joystick1x);
+        SERIAL_PRINT("joystick1y : ");
+        SERIAL_PRINTLN(joystick1y);
+        SERIAL_PRINT("joystick2x : ");
+        SERIAL_PRINTLN(joystick2x);
 
-        PRINT("gachetteGauche : ");
-        PRINTLN(gachetteGauche);
-        PRINT("gachetteDroite : ");
-        PRINTLN(gachetteDroite);
+        SERIAL_PRINT("gachetteGauche : ");
+        SERIAL_PRINTLN(gachetteGauche);
+        SERIAL_PRINT("gachetteDroite : ");
+        SERIAL_PRINTLN(gachetteDroite);
 
         if(tempsDepuisDernierAppuieA) {
-            PRINT("A : ");
-            PRINTLN(tempsDepuisDernierAppuieA);
+            SERIAL_PRINT("A : ");
+            SERIAL_PRINTLN(tempsDepuisDernierAppuieA);
         }
         if(tempsDepuisDernierAppuieB) {
-            PRINT("B : ");
-            PRINTLN(tempsDepuisDernierAppuieB);
+            SERIAL_PRINT("B : ");
+            SERIAL_PRINTLN(tempsDepuisDernierAppuieB);
         }
         if(tempsDepuisDernierAppuieX) {
-            PRINT("X : ");
-            PRINTLN(tempsDepuisDernierAppuieX);
+            SERIAL_PRINT("X : ");
+            SERIAL_PRINTLN(tempsDepuisDernierAppuieX);
         }
         if(tempsDepuisDernierAppuieY) {
-            PRINT("Y : ");
-            PRINTLN(tempsDepuisDernierAppuieY);
+            SERIAL_PRINT("Y : ");
+            SERIAL_PRINTLN(tempsDepuisDernierAppuieY);
         }
 
-        PRINTLN("");
+        SERIAL_PRINTLN("");
     }
 };
 
@@ -172,21 +172,21 @@ Actions Actions::lire(uint32_t deltaTime)
 }
 
 void Actions::print() const{
-    PRINT("avant             : ");
-    PRINTLN(avant);
-    PRINT("yaw               : ");
-    PRINTLN(yaw);
-    PRINT("strafe            : ");
-    PRINTLN(strafe);
+    SERIAL_PRINT("avant             : ");
+    SERIAL_PRINTLN(avant);
+    SERIAL_PRINT("yaw               : ");
+    SERIAL_PRINTLN(yaw);
+    SERIAL_PRINT("strafe            : ");
+    SERIAL_PRINTLN(strafe);
 
-    PRINT("translation       : ");
-    PRINTLN(translation);
+    SERIAL_PRINT("translation       : ");
+    SERIAL_PRINTLN(translation);
 
-    PRINT("rotationFourches  : ");
-    PRINTLN(rotationFourches);
+    SERIAL_PRINT("rotationFourches  : ");
+    SERIAL_PRINTLN(rotationFourches);
 
-    PRINT("ouvertureFourches : ");
-    PRINTLN(ouvertureFourches);
+    SERIAL_PRINT("ouvertureFourches : ");
+    SERIAL_PRINTLN(ouvertureFourches);
 
-    PRINTLN("");
+    SERIAL_PRINTLN("");
 }

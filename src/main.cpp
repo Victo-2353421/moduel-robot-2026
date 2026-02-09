@@ -2,7 +2,7 @@
 
 #include "utils.hpp"
 #include "config.hpp"
-#include "actions.hpp"
+#include "Actions.hpp"
 
 #include "MainController.hpp"
 
@@ -71,7 +71,7 @@ void loop()
 
     if (!CrcLib::IsCommValid())
     {
-        PRINTLN("Waiting for controller connection...");
+        SERIAL_PRINTLN("Waiting for controller connection...");
         delay(500);
         return;
     }

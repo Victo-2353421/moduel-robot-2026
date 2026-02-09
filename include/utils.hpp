@@ -44,8 +44,8 @@ static U conversionClamp(T valeur, U min, U max) {
 
 #ifdef SERIAL_ENABLE
     #define SERIAL_BEGIN() Serial.begin(9600)
-    #define PRINTLN(a) Serial.println(a)
-    #define PRINT(a) Serial.print(a)
+    #define SERIAL_PRINTLN(a) Serial.println(a)
+    #define SERIAL_PRINT(a) Serial.print(a)
 #else
     #define SERIAL_BEGIN()
     #define PRINTLN(a)
