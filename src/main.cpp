@@ -45,13 +45,13 @@ void setup()
 
     CrcLib::InitializePwmOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN);
     CrcLib::InitializePwmOutput(ANGLE_FOURCHE_DROITE_SERVO_PIN);
-    CrcLib::SetDigitalPinMode(ANGLE_FOURCHE_LIMIT_SWITCH_HAUT, INPUT);
-    CrcLib::SetDigitalPinMode(ANGLE_FOURCHE_LIMIT_SWITCH_BAS, INPUT);
+    CrcLib::SetDigitalPinMode(ANGLE_FOURCHE_LIMIT_SWITCH_HAUT, INPUT_PULLUP);
+    CrcLib::SetDigitalPinMode(ANGLE_FOURCHE_LIMIT_SWITCH_BAS, INPUT_PULLUP);
 
     CrcLib::InitializePwmOutput(OUVERTURE_FOURCHE_GAUCHE_SERVO_PIN);
     CrcLib::InitializePwmOutput(OUVERTURE_FOURCHE_DROITE_SERVO_PIN);
-    CrcLib::SetDigitalPinMode(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN, INPUT);
-    CrcLib::SetDigitalPinMode(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX, INPUT);
+    CrcLib::SetDigitalPinMode(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN, INPUT_PULLUP);
+    CrcLib::SetDigitalPinMode(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX, INPUT_PULLUP);
 
     //pinMode(CRC_SERIAL_TXD1, INPUT_PULLUP);
     //pinMode(CRC_SERIAL_RXD1, INPUT_PULLUP);
@@ -74,6 +74,25 @@ void loop()
         SERIAL_PRINTLN("Waiting for controller connection...");
         delay(500);
         return;
+    }
+    
+    {
+        static uint8_t testVal = 0;
+        const auto testTmp = CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN);
+        if(testVal != testTmp) {
+            testVal = testTmp;
+            SERIAL_PRINT("min : ");
+            SERIAL_PRINTLN(testVal);
+        }
+    }
+    {
+        static uint8_t testVal = 0;
+        const auto testTmp = CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX);
+        if(testVal != testTmp) {
+            testVal = testTmp;
+            SERIAL_PRINT("max : ");
+            SERIAL_PRINTLN(testVal);
+        }
     }
 
     const auto actions = Actions::lire(deltaTime);

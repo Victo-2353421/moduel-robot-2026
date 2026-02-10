@@ -151,10 +151,10 @@ Actions Actions::lire(uint32_t deltaTime)
         127
     );
 
-    if(controleManette.x && !controleManette.a) {
-        actions.rotationFourches = controleRotationFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieX);
-    } else if(!controleManette.x && controleManette.a) {
-        actions.rotationFourches = -controleRotationFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieA);
+    if(controleManette.a && !controleManette.x) {
+        actions.rotationFourches = controleRotationFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieA);
+    } else if(!controleManette.a && controleManette.x) {
+        actions.rotationFourches = -controleRotationFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieX);
     } else {
         actions.rotationFourches = 0;
     }
@@ -166,7 +166,6 @@ Actions Actions::lire(uint32_t deltaTime)
     } else {
         actions.ouvertureFourches = 0;
     }
-    //CrcLib::SetPwmOutput(CRC_PWM_10, actions.ouvertureFourches);
 
     return actions;
 }

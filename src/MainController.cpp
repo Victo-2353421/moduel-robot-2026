@@ -42,24 +42,28 @@ void MainController::gererTranslation(const Actions &actions)
 
 void MainController::gererRotationFourches(const Actions &actions)
 {
-    const int8_t rotation = actions.rotationFourches;
+    int8_t rotation = actions.rotationFourches;
 
     const bool limitHaut = CrcLib::GetDigitalInput(ANGLE_FOURCHE_LIMIT_SWITCH_HAUT) == HIGH;
     const bool limitBas = CrcLib::GetDigitalInput(ANGLE_FOURCHE_LIMIT_SWITCH_BAS) == HIGH;
-    if(!limitHaut && rotation <= 0) return;
-    if(!limitBas && 0 <= rotation) return;
+    if (limitHaut && rotation < 0 ||
+        limitBas && 0 < rotation) {
+        rotation = 0;
+    }
     CrcLib::SetPwmOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN, rotation);
     CrcLib::SetPwmOutput(ANGLE_FOURCHE_DROITE_SERVO_PIN, rotation);
 }
 
 void MainController::gererOuvertureFourches(const Actions &actions)
 {
-    const int8_t ouverture = actions.ouvertureFourches;
+    int8_t ouverture = actions.ouvertureFourches;
 
     const bool limitMin = CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN) == HIGH;
     const bool limitMax = CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX) == HIGH;
-    if(!limitMin && ouverture <= 0) return;
-    if(!limitMax && 0 <= ouverture) return;
+    if (limitMin && ouverture < 0 ||
+        limitMax && 0 < ouverture) {
+        ouverture = 0;
+    }
     CrcLib::SetPwmOutput(OUVERTURE_FOURCHE_GAUCHE_SERVO_PIN, ouverture);
     CrcLib::SetPwmOutput(OUVERTURE_FOURCHE_DROITE_SERVO_PIN, ouverture);
 }
