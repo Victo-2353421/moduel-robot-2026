@@ -4,7 +4,7 @@
 #include "Actions.hpp"
 #include "config.hpp"
 
-class MainController
+class Controlleur
 {
 public:
     void update(const Actions& actions, uint32_t deltaTime);
@@ -15,10 +15,11 @@ public:
 
     void gererTranslation(const Actions& actions);
 
-    int8_t vitesseRotationFourches = 127;
+    int8_t rotationFourches = 0;
+    int8_t minRotationFourches = -70;
+    int8_t maxRotationFourches = 70;
     void gererRotationFourches(const Actions& actions);
 
-    int8_t vitesseOuvertureFourches = 127;
     void gererOuvertureFourches(const Actions& actions);
 };
 

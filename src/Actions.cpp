@@ -5,27 +5,37 @@
 struct ControleVitesse {
     int8_t minVitesse;
     int8_t maxVitesse;
-    int8_t derniereVitesse;
     float acceleration;
     float debutAcceleration;
 
     constexpr ControleVitesse(
         int8_t minVitesse,
         int8_t maxVitesse,
-        int8_t derniereVitesse,
         float acceleration,
         float debutAcceleration
     )
       : minVitesse(minVitesse)
       , maxVitesse(maxVitesse)
-      , derniereVitesse(derniereVitesse)
       , acceleration(acceleration)
       , debutAcceleration(debutAcceleration) {}
 
     int8_t obtenirVitesse(uint32_t tempsAppuie) const{
-        return utils::conversionClamp<float, int8_t>(
+        const float valeur =
             ceilf(static_cast<float>(tempsAppuie) / static_cast<float>(utils::MICROSECONDES_PAR_SECONDE))
-                * acceleration + debutAcceleration,
+            * acceleration + debutAcceleration;
+        return utils::conversionClamp<float, int8_t>(
+            valeur,
+            minVitesse,
+            maxVitesse
+        );
+    }
+
+    int8_t obtenirDelta(uint32_t tempsAppuie, uint32_t deltaTime) const{
+        const float valeur =
+            (static_cast<float>(tempsAppuie) / static_cast<float>(utils::MICROSECONDES_PAR_SECONDE) * acceleration + debutAcceleration)
+            * (static_cast<float>(deltaTime) / static_cast<float>(utils::MICROSECONDES_PAR_SECONDE));
+        return utils::conversionClamp<float, int8_t>(
+            valeur,
             minVitesse,
             maxVitesse
         );
@@ -33,20 +43,22 @@ struct ControleVitesse {
 };
 
 constexpr static ControleVitesse controleRotationFourches{
-    -128,
-    127,
-    0,
-    1270.0f,
-    0.0f,
+    ANGLE_FOURCHE_VITESSE_MIN,
+    ANGLE_FOURCHE_VITESSE_MAX,
+    ANGLE_FOURCHE_ACCELERATION,
+    ANGLE_FOURCHE_ACCELERATION_INITIALE,
 };
 constexpr static ControleVitesse controleOuvertureFourches{
-    -128,
-    127,
-    0,
-    64.0f,
-    8.0f,
+    OUVERTURE_FOURCHE_VITESSE_MIN,
+    OUVERTURE_FOURCHE_VITESSE_MAX,
+    OUVERTURE_FOURCHE_ACCELERATION,
+    OUVERTURE_FOURCHE_ACCELERATION_INITIALE,
 };
 
+/**
+ * Cette struct représente l'état de la manette pour une itération de la boucle
+ * `loop` principale du programme.
+ */
 struct ControleManette {
     int8_t joystick1x = 0;
     int8_t joystick1y = 0;
@@ -64,6 +76,9 @@ struct ControleManette {
     uint32_t tempsDepuisDernierAppuieY = 0;
     bool y = false;
 
+    /**
+     * Lire l'état de la manette.
+     */
     void lire(uint32_t deltaTime) {
         joystick1x = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_X);
         joystick1y = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_Y);
@@ -133,17 +148,17 @@ struct ControleManette {
         SERIAL_PRINTLN("");
     }
 };
+static ControleManette controleManette;
 
 Actions Actions::lire(uint32_t deltaTime)
 {
-    static ControleManette controleManette;
     controleManette.lire(deltaTime);
     //controleManette.print();
     Actions actions;
 
     actions.avant = controleManette.joystick1y;
-    actions.yaw = controleManette.joystick2x;
-    actions.strafe = controleManette.joystick1x;
+    actions.lacet = controleManette.joystick2x;
+    actions.lateral = controleManette.joystick1x;
 
     actions.translation = utils::conversionClamp<int16_t, int8_t>(
         controleManette.gachetteDroite - controleManette.gachetteGauche,
@@ -152,40 +167,43 @@ Actions Actions::lire(uint32_t deltaTime)
     );
 
     if(controleManette.a && !controleManette.x) {
-        actions.rotationFourches = controleRotationFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieA);
+        actions.deltaRotationFourches = controleRotationFourches.obtenirDelta(controleManette.tempsDepuisDernierAppuieA, deltaTime);
     } else if(!controleManette.a && controleManette.x) {
-        actions.rotationFourches = -controleRotationFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieX);
+        actions.deltaRotationFourches = -controleRotationFourches.obtenirDelta(controleManette.tempsDepuisDernierAppuieX, deltaTime);
     } else {
-        actions.rotationFourches = 0;
+        actions.deltaRotationFourches = 0;
     }
 
     if(controleManette.b && !controleManette.y) {
-        actions.ouvertureFourches = controleOuvertureFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieB);
+        actions.vitesseOuvertureFourches = controleOuvertureFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieB);
     } else if(!controleManette.b && controleManette.y) {
-        actions.ouvertureFourches = -controleOuvertureFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieY);
+        actions.vitesseOuvertureFourches = -controleOuvertureFourches.obtenirVitesse(controleManette.tempsDepuisDernierAppuieY);
     } else {
-        actions.ouvertureFourches = 0;
+        actions.vitesseOuvertureFourches = 0;
     }
 
     return actions;
 }
 
+/**
+ * Affiche la struct dans le moniteur de série
+ */
 void Actions::print() const{
     SERIAL_PRINT("avant             : ");
     SERIAL_PRINTLN(avant);
-    SERIAL_PRINT("yaw               : ");
-    SERIAL_PRINTLN(yaw);
-    SERIAL_PRINT("strafe            : ");
-    SERIAL_PRINTLN(strafe);
+    SERIAL_PRINT("lacet               : ");
+    SERIAL_PRINTLN(lacet);
+    SERIAL_PRINT("lateral            : ");
+    SERIAL_PRINTLN(lateral);
 
     SERIAL_PRINT("translation       : ");
     SERIAL_PRINTLN(translation);
 
-    SERIAL_PRINT("rotationFourches  : ");
-    SERIAL_PRINTLN(rotationFourches);
+    SERIAL_PRINT("deltaRotationFourches  : ");
+    SERIAL_PRINTLN(deltaRotationFourches);
 
-    SERIAL_PRINT("ouvertureFourches : ");
-    SERIAL_PRINTLN(ouvertureFourches);
+    SERIAL_PRINT("vitesseOuvertureFourches : ");
+    SERIAL_PRINTLN(vitesseOuvertureFourches);
 
     SERIAL_PRINTLN("");
 }

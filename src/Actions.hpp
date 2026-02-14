@@ -3,19 +3,35 @@
 
 #include <CrcLib.h>
 
+/**
+ * Cette struct représente les actions à effectuer pour une itération de la boucle
+ * `loop` du programme. C'est les instructions que Controlleur lit.
+ */
 struct Actions {
+    // Avancement / recul du robot
     int8_t avant{};
-    int8_t yaw{};
-    int8_t strafe{};
+    // Rotation du robot https://fr.wikipedia.org/wiki/Lacet_(mouvement)
+    int8_t lacet{};
+    // Mouvement latéral du robot
+    int8_t lateral{};
 
+    // Monter/descendre
     int8_t translation{};
 
-    int8_t rotationFourches{};
+    // Le *delta* de rotation des fourches.
+    int8_t deltaRotationFourches{};
 
-    int8_t ouvertureFourches{};
+    // La *vitesse* de l'ouverture des fourches.
+    int8_t vitesseOuvertureFourches{};
 
+    /**
+     * Lire l'état de la manette et retourner son Actions correspondant.
+     */
     static Actions lire(uint32_t deltaTime);
 
+    /**
+     * Affiche la struct dans le moniteur de série
+     */
     void print() const;
 };
 

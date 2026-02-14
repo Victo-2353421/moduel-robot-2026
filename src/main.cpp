@@ -4,7 +4,7 @@
 #include "config.hpp"
 #include "Actions.hpp"
 
-#include "MainController.hpp"
+#include "Controlleur.hpp"
 
 static_assert(sizeof(char) == 1);
 static_assert(sizeof(short) == 2);
@@ -12,7 +12,7 @@ static_assert(sizeof(int) == 2);
 static_assert(sizeof(long) == 4);
 static_assert(sizeof(long long) == 8);
 
-static MainController mainController;
+static Controlleur mainController;
 
 static uint32_t microSecs{};
 
@@ -43,7 +43,7 @@ void setup()
 
     CrcLib::InitializePwmOutput(TRANSLATION_PIN);
 
-    CrcLib::InitializePwmOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN);
+    CrcLib::InitializePwmOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN, true);
     CrcLib::InitializePwmOutput(ANGLE_FOURCHE_DROITE_SERVO_PIN);
     CrcLib::SetDigitalPinMode(ANGLE_FOURCHE_LIMIT_SWITCH_HAUT, INPUT_PULLUP);
     CrcLib::SetDigitalPinMode(ANGLE_FOURCHE_LIMIT_SWITCH_BAS, INPUT_PULLUP);
