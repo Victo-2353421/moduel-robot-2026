@@ -2,6 +2,7 @@
 #define ACTIONS_HPP
 
 #include <CrcLib.h>
+#include "config.hpp"
 
 /**
  * Cette struct représente les actions à effectuer pour une itération de la boucle
@@ -27,7 +28,7 @@ struct Actions {
     /**
      * Lire l'état de la manette et retourner son Actions correspondant.
      */
-    static Actions lire(uint32_t deltaTime);
+    static Actions lire(US deltaTime);
 
     /**
      * Affiche la struct dans le moniteur de série

@@ -8,34 +8,54 @@
 
 #include <CrcLib.h>
 
+// numéro de pin.
+using Pin = uint8_t;
+// microsecondes μs
+using US = uint32_t;
+
 // changer ceci de 1 ou 0 afin d'activer/désactiver le moniteur de série.
 // Le moniteur de série peut causer beaucoup de latance. C'est utile pour le
 // débogage mais ÇA DOIT _ABSOLUMENT_ ÊTRE DÉSACTIVÉ LORS DE LA COMPÉTITION.
 #define SERIAL_ENABLE 1
 
-// Les pins des roues. Ça correspond aux contrôles des moteurs des roues
-constexpr uint8_t ROUE_AVANT_GAUCHE_PIN = CRC_PWM_1;
-constexpr uint8_t ROUE_AVANT_DROITE_PIN = CRC_PWM_4;
-constexpr uint8_t ROUE_ARRIERE_GAUCHE_PIN = CRC_PWM_2;
-constexpr uint8_t ROUE_ARRIERE_DROITE_PIN = CRC_PWM_3;
+/******************************************/
+/*          Contrôles des roues.          */
+/******************************************/
 
-// La pin du contrôle pour monter/descendre.
-constexpr uint8_t TRANSLATION_PIN_GAUCHE = CRC_PWM_5;
-constexpr uint8_t TRANSLATION_PIN_DROITE = CRC_PWM_6;
+constexpr Pin ROUE_AVANT_GAUCHE_PIN = CRC_PWM_1;
+constexpr Pin ROUE_AVANT_DROITE_PIN = CRC_PWM_4;
+constexpr Pin ROUE_ARRIERE_GAUCHE_PIN = CRC_PWM_2;
+constexpr Pin ROUE_ARRIERE_DROITE_PIN = CRC_PWM_3;
+constexpr int8_t ROUES_VITESSE_MIN = -128;
+constexpr int8_t ROUES_VITESSE_MAX = 90;
+
+
+/******************************************/
+/*    Contrôles pour monter/descendre.    */
+/******************************************/
+
+constexpr Pin TRANSLATION_PIN_GAUCHE = CRC_PWM_5;
+constexpr Pin TRANSLATION_PIN_DROITE = CRC_PWM_6;
 constexpr bool ACTIVER_TRANSLATION_LIMIT_SWITCH_MIN = true;
-constexpr uint8_t TRANSLATION_LIMIT_SWITCH_MIN = CRC_DIG_5;
+constexpr Pin TRANSLATION_LIMIT_SWITCH_MIN = CRC_DIG_5;
 constexpr bool ACTIVER_TRANSLATION_LIMIT_SWITCH_MAX = true;
-constexpr uint8_t TRANSLATION_LIMIT_SWITCH_MAX = CRC_DIG_6;
+constexpr Pin TRANSLATION_LIMIT_SWITCH_MAX = CRC_DIG_6;
 
-// Contrôles de la rotation des fourches.
+
+/******************************************/
+/* Contrôles de la rotation des fourches. */
+/******************************************/
+
 // METTRE LES VALEURS « ACTIVER » À FALSE SI LES LIMIT
 // SWITCH NE SONT PAS BRANCHÉES OU NON FONCTIONNELLES.
-constexpr uint8_t ANGLE_FOURCHE_GAUCHE_SERVO_PIN = CRC_PWM_7;
-constexpr uint8_t ANGLE_FOURCHE_DROITE_SERVO_PIN = CRC_PWM_8;
+constexpr Pin ANGLE_FOURCHE_GAUCHE_SERVO_PIN = CRC_PWM_7;
+constexpr Pin ANGLE_FOURCHE_DROITE_SERVO_PIN = CRC_PWM_8;
 constexpr bool ACTIVER_ANGLE_FOURCHE_LIMIT_SWITCH_HAUT = true;
-constexpr uint8_t ANGLE_FOURCHE_LIMIT_SWITCH_HAUT = CRC_DIG_3;
+constexpr Pin ANGLE_FOURCHE_LIMIT_SWITCH_HAUT = CRC_DIG_3;
 constexpr bool ACTIVER_ANGLE_FOURCHE_LIMIT_SWITCH_BAS = true;
-constexpr uint8_t ANGLE_FOURCHE_LIMIT_SWITCH_BAS = CRC_DIG_4;
+constexpr Pin ANGLE_FOURCHE_LIMIT_SWITCH_BAS = CRC_DIG_4;
+constexpr int8_t ANGLE_FOURCHE_MINIMAL = -70; // angle de rotation minimale.
+constexpr int8_t ANGLE_FOURCHE_MAXIMAL = 70; // angle de rotation maximale.
 
 // La vitesse d'accélération de la rotation
 constexpr float ANGLE_FOURCHE_ACCELERATION = 500.0f;
@@ -44,18 +64,22 @@ constexpr float ANGLE_FOURCHE_ACCELERATION_INITIALE = 150.0f;
 constexpr int8_t ANGLE_FOURCHE_VITESSE_MIN = -128;
 constexpr int8_t ANGLE_FOURCHE_VITESSE_MAX = 127;
 
-// Contrôles de l'ouverture des fourches.
+
+/******************************************/
+/* Contrôles de l'ouverture des fourches. */
+/******************************************/
+
 // METTRE LES VALEURS « ACTIVER » À FALSE SI LES LIMIT
 // SWITCH NE SONT PAS BRANCHÉES OU NON FONCTIONNELLES.
-constexpr uint8_t OUVERTURE_FOURCHE_GAUCHE_SERVO_PIN = CRC_PWM_9;
-constexpr uint8_t OUVERTURE_FOURCHE_DROITE_SERVO_PIN = CRC_PWM_10;
+constexpr Pin OUVERTURE_FOURCHE_GAUCHE_SERVO_PIN = CRC_PWM_9;
+constexpr Pin OUVERTURE_FOURCHE_DROITE_SERVO_PIN = CRC_PWM_10;
 constexpr bool ACTIVER_OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN = true;
-constexpr uint8_t OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN = CRC_DIG_1;
+constexpr Pin OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN = CRC_DIG_1;
 constexpr bool ACTIVER_OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX = true;
-constexpr uint8_t OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX = CRC_DIG_2;
+constexpr Pin OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX = CRC_DIG_2;
 // Signal que les fourches sont accotées à un objet
 constexpr bool ATIVER_OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL = true;
-constexpr uint8_t OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL = CRC_DIG_7;
+constexpr Pin OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL = CRC_DIG_7;
 
 // La vitesse d'accélération de l'ouverture
 constexpr float OUVERTURE_FOURCHE_ACCELERATION = 64.0f;

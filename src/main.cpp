@@ -14,7 +14,7 @@ static_assert(sizeof(long long) == 8);
 
 static Controlleur mainController;
 
-static uint32_t microSecs{};
+static US microSecs{};
 
 void setup()
 {
@@ -48,9 +48,9 @@ void setup()
 void loop()
 {
     CrcLib::Update();
-    const uint32_t microSecsPrecedant = microSecs;
+    const US microSecsPrecedant = microSecs;
     microSecs = micros();
-    const uint32_t deltaTime = microSecs - microSecsPrecedant;
+    const US deltaTime = microSecs - microSecsPrecedant;
 
     if (!CrcLib::IsCommValid())
     {

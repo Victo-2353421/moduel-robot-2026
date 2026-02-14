@@ -7,17 +7,13 @@
 class Controlleur
 {
 public:
-    void update(const Actions& actions, uint32_t deltaTime);
+    void update(const Actions& actions, US deltaTime);
 
-    int8_t minVitesseRoues = -128;
-    int8_t maxVitesseRoues = 90;
     void gererMouvement(const Actions& actions);
 
     void gererTranslation(const Actions& actions);
 
     int8_t rotationFourches = 0;
-    int8_t minRotationFourches = -70;
-    int8_t maxRotationFourches = 70;
     void gererRotationFourches(const Actions& actions);
 
     bool signalArretFermeture = false;

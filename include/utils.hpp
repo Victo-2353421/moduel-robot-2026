@@ -27,7 +27,7 @@ T map(T x, T in_min, T in_max, T out_min, T out_max)
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-static constexpr uint32_t MICROSECONDES_PAR_SECONDE = 1000000;
+static constexpr US MICROSECONDES_PAR_SECONDE = 1000000;
 
 /**
  * Cette fonction permet de faire des maths sur, par exemple, des int8_t en

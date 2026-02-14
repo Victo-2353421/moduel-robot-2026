@@ -4,7 +4,7 @@
 
 #include "utils.hpp"
 
-void Controlleur::update(const Actions& actions, uint32_t deltaTime)
+void Controlleur::update(const Actions& actions, US deltaTime)
 {
     //actions.print();
     (void)deltaTime;
@@ -20,8 +20,8 @@ void Controlleur::gererMouvement(const Actions& actions)
     const int16_t lacet = actions.lacet;
     const int16_t lateral = actions.lateral;
 
-    const int8_t min = minVitesseRoues;
-    const int8_t max = maxVitesseRoues;
+    const int8_t min = ROUES_VITESSE_MIN;
+    const int8_t max = ROUES_VITESSE_MAX;
     const int8_t avantGauche = utils::conversionClamp(avant - lacet - lateral, min, max);
     const int8_t arriereGauche = utils::conversionClamp(avant - lacet + lateral, min, max);
     const int8_t avantDroite = utils::conversionClamp(avant + lacet + lateral, min, max);
@@ -36,8 +36,6 @@ void Controlleur::gererMouvement(const Actions& actions)
 void Controlleur::gererTranslation(const Actions &actions)
 {
     int8_t translation = actions.translation;
-
-    SERIAL_PRINTLN(translation);
 
     const bool limitMin = CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MIN) == HIGH;
     const bool limitMax = CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MAX) == HIGH;
@@ -59,7 +57,11 @@ void Controlleur::gererRotationFourches(const Actions &actions)
         (ACTIVER_ANGLE_FOURCHE_LIMIT_SWITCH_BAS && limitBas && (0 < deltaRotation))) {
         deltaRotation = 0;
     }
-    rotationFourches = utils::conversionClamp<int16_t, int8_t>(rotationFourches + deltaRotation, minRotationFourches, maxRotationFourches);
+    rotationFourches = utils::conversionClamp<int16_t, int8_t>(
+        rotationFourches + deltaRotation,
+        ANGLE_FOURCHE_MINIMAL,
+        ANGLE_FOURCHE_MAXIMAL
+    );
 
     CrcLib::SetPwmOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN, rotationFourches);
     CrcLib::SetPwmOutput(ANGLE_FOURCHE_DROITE_SERVO_PIN, rotationFourches);

@@ -19,7 +19,7 @@ struct ControleVitesse {
       , acceleration(acceleration)
       , debutAcceleration(debutAcceleration) {}
 
-    int8_t obtenirVitesse(uint32_t tempsAppuie) const{
+    int8_t obtenirVitesse(US tempsAppuie) const{
         const float valeur =
             ceilf(static_cast<float>(tempsAppuie) / static_cast<float>(utils::MICROSECONDES_PAR_SECONDE))
             * acceleration + debutAcceleration;
@@ -30,7 +30,7 @@ struct ControleVitesse {
         );
     }
 
-    int8_t obtenirDelta(uint32_t tempsAppuie, uint32_t deltaTime) const{
+    int8_t obtenirDelta(US tempsAppuie, US deltaTime) const{
         const float valeur =
             (static_cast<float>(tempsAppuie) / static_cast<float>(utils::MICROSECONDES_PAR_SECONDE) * acceleration + debutAcceleration)
             * (static_cast<float>(deltaTime) / static_cast<float>(utils::MICROSECONDES_PAR_SECONDE));
@@ -67,19 +67,21 @@ struct ControleManette {
     int8_t gachetteGauche = 0;
     int8_t gachetteDroite = 0;
 
-    uint32_t tempsDepuisDernierAppuieA = 0;
+    US tempsDepuisDernierAppuieA = 0;
     bool a = false;
-    uint32_t tempsDepuisDernierAppuieB = 0;
+    US tempsDepuisDernierAppuieB = 0;
     bool b = false;
-    uint32_t tempsDepuisDernierAppuieX = 0;
+    US tempsDepuisDernierAppuieX = 0;
     bool x = false;
-    uint32_t tempsDepuisDernierAppuieY = 0;
+    US tempsDepuisDernierAppuieY = 0;
     bool y = false;
+
+    bool start = false;
 
     /**
      * Lire l'état de la manette.
      */
-    void lire(uint32_t deltaTime) {
+    void lire(US deltaTime) {
         joystick1x = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_X);
         joystick1y = CrcLib::ReadAnalogChannel(ANALOG::JOYSTICK1_Y);
         if(joystick1y == -1) joystick1y = 0; // correction fucké de la précision.
@@ -113,6 +115,8 @@ struct ControleManette {
             tempsDepuisDernierAppuieY += deltaTime;
         else
             tempsDepuisDernierAppuieY = 0;
+
+        start = CrcLib::ReadDigitalChannel(BUTTON::START);
     }
 
     void print() const{
@@ -150,7 +154,7 @@ struct ControleManette {
 };
 static ControleManette controleManette;
 
-Actions Actions::lire(uint32_t deltaTime)
+Actions Actions::lire(US deltaTime)
 {
     controleManette.lire(deltaTime);
     //controleManette.print();
