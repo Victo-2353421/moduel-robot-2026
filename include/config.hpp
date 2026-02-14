@@ -14,7 +14,7 @@ using Pin = uint8_t;
 using US = uint32_t;
 
 // changer ceci de 1 ou 0 afin d'activer/désactiver le moniteur de série.
-// Le moniteur de série peut causer beaucoup de latance. C'est utile pour le
+// Le moniteur de série peut causer beaucoup de latence. C'est utile pour le
 // débogage mais ÇA DOIT _ABSOLUMENT_ ÊTRE DÉSACTIVÉ LORS DE LA COMPÉTITION.
 #define SERIAL_ENABLE 1
 
