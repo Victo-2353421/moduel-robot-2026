@@ -35,16 +35,23 @@ void Controlleur::gererMouvement(const Actions& actions)
 
 void Controlleur::gererTranslation(const Actions &actions)
 {
-    const int8_t translation = actions.translation;
-    
-    CrcLib::SetPwmOutput(TRANSLATION_PIN, translation);
+    int8_t translation = actions.translation;
+
+    SERIAL_PRINTLN(translation);
+
+    const bool limitMin = CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MIN) == HIGH;
+    const bool limitMax = CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MAX) == HIGH;
+    if ((ACTIVER_TRANSLATION_LIMIT_SWITCH_MIN && limitMin && (translation < 0)) ||
+        (ACTIVER_TRANSLATION_LIMIT_SWITCH_MAX && limitMax && (0 < translation))) {
+        translation = 0;
+    }
+    CrcLib::SetPwmOutput(TRANSLATION_PIN_GAUCHE, translation);
+    CrcLib::SetPwmOutput(TRANSLATION_PIN_DROITE, translation);
 }
 
 void Controlleur::gererRotationFourches(const Actions &actions)
 {
     int8_t deltaRotation = actions.deltaRotationFourches;
-    SERIAL_PRINT(deltaRotation);
-    SERIAL_PRINT(" ");
 
     const bool limitHaut = CrcLib::GetDigitalInput(ANGLE_FOURCHE_LIMIT_SWITCH_HAUT) == HIGH;
     const bool limitBas = CrcLib::GetDigitalInput(ANGLE_FOURCHE_LIMIT_SWITCH_BAS) == HIGH;
@@ -53,10 +60,6 @@ void Controlleur::gererRotationFourches(const Actions &actions)
         deltaRotation = 0;
     }
     rotationFourches = utils::conversionClamp<int16_t, int8_t>(rotationFourches + deltaRotation, minRotationFourches, maxRotationFourches);
-    SERIAL_PRINT(deltaRotation);
-    SERIAL_PRINT(" ");
-    SERIAL_PRINT(rotationFourches);
-    SERIAL_PRINTLN("");
 
     CrcLib::SetPwmOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN, rotationFourches);
     CrcLib::SetPwmOutput(ANGLE_FOURCHE_DROITE_SERVO_PIN, rotationFourches);
@@ -65,6 +68,20 @@ void Controlleur::gererRotationFourches(const Actions &actions)
 void Controlleur::gererOuvertureFourches(const Actions &actions)
 {
     int8_t ouverture = actions.vitesseOuvertureFourches;
+
+    if(ATIVER_OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL) {
+        signalArretFermeture = CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL) == HIGH;
+        if (signalArretFermeture) {
+            if(!ignoreArretFermeture && (ouverture < 0)){
+                // Empêcher de fermer plus
+                ouverture = 0;
+            } else if(0 <= ouverture) {
+                ignoreArretFermeture = true;
+            }
+        } else {
+            ignoreArretFermeture = false;
+        }
+    }
 
     const bool limitMin = CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN) == HIGH;
     const bool limitMax = CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX) == HIGH;

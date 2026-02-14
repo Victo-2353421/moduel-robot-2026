@@ -20,6 +20,8 @@ public:
     int8_t maxRotationFourches = 70;
     void gererRotationFourches(const Actions& actions);
 
+    bool signalArretFermeture = false;
+    bool ignoreArretFermeture = false;
     void gererOuvertureFourches(const Actions& actions);
 };
 

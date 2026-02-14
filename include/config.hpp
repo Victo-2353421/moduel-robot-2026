@@ -20,7 +20,12 @@ constexpr uint8_t ROUE_ARRIERE_GAUCHE_PIN = CRC_PWM_2;
 constexpr uint8_t ROUE_ARRIERE_DROITE_PIN = CRC_PWM_3;
 
 // La pin du contrôle pour monter/descendre.
-constexpr uint8_t TRANSLATION_PIN = CRC_PWM_5;
+constexpr uint8_t TRANSLATION_PIN_GAUCHE = CRC_PWM_5;
+constexpr uint8_t TRANSLATION_PIN_DROITE = CRC_PWM_6;
+constexpr bool ACTIVER_TRANSLATION_LIMIT_SWITCH_MIN = true;
+constexpr uint8_t TRANSLATION_LIMIT_SWITCH_MIN = CRC_DIG_5;
+constexpr bool ACTIVER_TRANSLATION_LIMIT_SWITCH_MAX = true;
+constexpr uint8_t TRANSLATION_LIMIT_SWITCH_MAX = CRC_DIG_6;
 
 // Contrôles de la rotation des fourches.
 // METTRE LES VALEURS « ACTIVER » À FALSE SI LES LIMIT
@@ -48,11 +53,14 @@ constexpr bool ACTIVER_OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN = true;
 constexpr uint8_t OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN = CRC_DIG_1;
 constexpr bool ACTIVER_OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX = true;
 constexpr uint8_t OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX = CRC_DIG_2;
+// Signal que les fourches sont accotées à un objet
+constexpr bool ATIVER_OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL = true;
+constexpr uint8_t OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL = CRC_DIG_7;
 
 // La vitesse d'accélération de l'ouverture
 constexpr float OUVERTURE_FOURCHE_ACCELERATION = 64.0f;
 // Lorsqu'on commence à appuyer sur la touche d'ouverture, la vitesse à laquelle l'ouverture commence
-constexpr float OUVERTURE_FOURCHE_ACCELERATION_INITIALE = 8.0f;
+constexpr float OUVERTURE_FOURCHE_ACCELERATION_INITIALE = 16.0f;
 constexpr int8_t OUVERTURE_FOURCHE_VITESSE_MIN = -128;
 constexpr int8_t OUVERTURE_FOURCHE_VITESSE_MAX = 127;
 
