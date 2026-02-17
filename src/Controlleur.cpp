@@ -12,6 +12,7 @@ void Controlleur::update(const Actions& actions, US deltaTime)
     this->gererTranslation(actions);
     this->gererRotationFourches(actions);
     this->gererOuvertureFourches(actions);
+    this->gererDELs();
 }
 
 void Controlleur::gererMouvement(const Actions& actions)
@@ -51,12 +52,6 @@ void Controlleur::gererRotationFourches(const Actions &actions)
 {
     int8_t deltaRotation = actions.deltaRotationFourches;
 
-    const bool limitHaut = CrcLib::GetDigitalInput(ANGLE_FOURCHE_LIMIT_SWITCH_HAUT) == HIGH;
-    const bool limitBas = CrcLib::GetDigitalInput(ANGLE_FOURCHE_LIMIT_SWITCH_BAS) == HIGH;
-    if ((ACTIVER_ANGLE_FOURCHE_LIMIT_SWITCH_HAUT && limitHaut && (deltaRotation < 0)) ||
-        (ACTIVER_ANGLE_FOURCHE_LIMIT_SWITCH_BAS && limitBas && (0 < deltaRotation))) {
-        deltaRotation = 0;
-    }
     rotationFourches = utils::conversionClamp<int16_t, int8_t>(
         rotationFourches + deltaRotation,
         ANGLE_FOURCHE_MINIMAL,
@@ -93,4 +88,27 @@ void Controlleur::gererOuvertureFourches(const Actions &actions)
     }
     CrcLib::SetPwmOutput(OUVERTURE_FOURCHE_GAUCHE_SERVO_PIN, ouverture);
     CrcLib::SetPwmOutput(OUVERTURE_FOURCHE_DROITE_SERVO_PIN, ouverture);
+}
+
+void Controlleur::gererDELs(){
+    CrcLib::SetDigitalOutput(
+        OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN_DEL,
+        CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN)
+    );
+    CrcLib::SetDigitalOutput(
+        OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX_DEL,
+        CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX)
+    );
+    CrcLib::SetDigitalOutput(
+        TRANSLATION_LIMIT_SWITCH_MIN_DEL,
+        CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MIN)
+    );
+    CrcLib::SetDigitalOutput(
+        TRANSLATION_LIMIT_SWITCH_MAX_DEL,
+        CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MAX)
+    );
+    CrcLib::SetDigitalOutput(
+        OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL_DEL,
+        CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL)
+    );
 }

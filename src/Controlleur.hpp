@@ -19,6 +19,8 @@ public:
     bool signalArretFermeture = false;
     bool ignoreArretFermeture = false;
     void gererOuvertureFourches(const Actions& actions);
+    
+    void gererDELs();
 };
 
 #endif
