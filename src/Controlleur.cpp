@@ -100,15 +100,15 @@ void Controlleur::gererDELs(){
         CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX)
     );
     CrcLib::SetDigitalOutput(
+        OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL_DEL,
+        CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL)
+    );
+    CrcLib::SetDigitalOutput(
         TRANSLATION_LIMIT_SWITCH_MIN_DEL,
         CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MIN)
     );
     CrcLib::SetDigitalOutput(
         TRANSLATION_LIMIT_SWITCH_MAX_DEL,
         CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MAX)
-    );
-    CrcLib::SetDigitalOutput(
-        OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL_DEL,
-        CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL)
     );
 }

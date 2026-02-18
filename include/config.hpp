@@ -16,7 +16,7 @@ using US = uint32_t;
 // changer ceci de 1 ou 0 afin d'activer/désactiver le moniteur de série.
 // Le moniteur de série peut causer beaucoup de latence. C'est utile pour le
 // débogage mais ÇA DOIT _ABSOLUMENT_ ÊTRE DÉSACTIVÉ LORS DE LA COMPÉTITION.
-#define SERIAL_ENABLE 0
+#define SERIAL_ENABLE 1
 
 /******************************************/
 /*          Contrôles des roues.          */
@@ -37,9 +37,9 @@ constexpr int8_t ROUES_VITESSE_MAX = 90;
 constexpr Pin TRANSLATION_PIN_GAUCHE = CRC_PWM_5;
 constexpr Pin TRANSLATION_PIN_DROITE = CRC_PWM_6;
 constexpr bool ACTIVER_TRANSLATION_LIMIT_SWITCH_MIN = true;
-constexpr Pin TRANSLATION_LIMIT_SWITCH_MIN = CRC_DIG_3;
+constexpr Pin TRANSLATION_LIMIT_SWITCH_MIN = CRC_DIG_4;
 constexpr bool ACTIVER_TRANSLATION_LIMIT_SWITCH_MAX = true;
-constexpr Pin TRANSLATION_LIMIT_SWITCH_MAX = CRC_DIG_4;
+constexpr Pin TRANSLATION_LIMIT_SWITCH_MAX = CRC_DIG_5;
 
 
 /******************************************/
