@@ -33,17 +33,18 @@ void setup()
     CrcLib::InitializePwmOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN, true);
     CrcLib::InitializePwmOutput(ANGLE_FOURCHE_DROITE_SERVO_PIN);
 
-    CrcLib::InitializePwmOutput(OUVERTURE_FOURCHE_GAUCHE_SERVO_PIN, true);
-    CrcLib::InitializePwmOutput(OUVERTURE_FOURCHE_DROITE_SERVO_PIN, true);
+    CrcLib::InitializePwmOutput(OUVERTURE_FOURCHE_GAUCHE_SERVO_PIN);
+    CrcLib::InitializePwmOutput(OUVERTURE_FOURCHE_DROITE_SERVO_PIN);
     CrcLib::SetDigitalPinMode(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN, INPUT_PULLUP);
     CrcLib::SetDigitalPinMode(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX, INPUT_PULLUP);
     CrcLib::SetDigitalPinMode(OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL, INPUT_PULLUP);
 
-    CrcLib::SetDigitalPinMode(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN_DEL, OUTPUT);
-    CrcLib::SetDigitalPinMode(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX_DEL, OUTPUT);
-    CrcLib::SetDigitalPinMode(OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL_DEL, OUTPUT);
-    CrcLib::SetDigitalPinMode(TRANSLATION_LIMIT_SWITCH_MIN_DEL, OUTPUT);
-    CrcLib::SetDigitalPinMode(TRANSLATION_LIMIT_SWITCH_MAX_DEL, OUTPUT);
+    CrcLib::SetDigitalPinMode(CRC_DIG_7, OUTPUT);
+    CrcLib::SetDigitalPinMode(CRC_DIG_8, OUTPUT);
+    CrcLib::SetDigitalPinMode(CRC_DIG_9, OUTPUT);
+    CrcLib::SetDigitalPinMode(CRC_DIG_10, OUTPUT);
+    CrcLib::SetDigitalPinMode(CRC_DIG_11, OUTPUT);
+    CrcLib::SetDigitalPinMode(CRC_DIG_12, OUTPUT);
 
     SERIAL_BEGIN();
     microSecs = micros();
@@ -63,24 +64,72 @@ void loop()
         return;
     }
     
+    /*
+    // décommenter pour déboguer les limit switchs
     {
         static uint8_t testVal = 0;
-        const auto testTmp = CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MIN);
+        const auto testTmp = CrcLib::GetDigitalInput(CRC_DIG_1);
         if(testVal != testTmp) {
             testVal = testTmp;
-            SERIAL_PRINT("min : ");
+            SERIAL_PRINT("CRC_DIG_1 : ");
             SERIAL_PRINTLN(testVal);
         }
     }
     {
         static uint8_t testVal = 0;
-        const auto testTmp = CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MAX);
+        const auto testTmp = CrcLib::GetDigitalInput(CRC_DIG_2);
         if(testVal != testTmp) {
             testVal = testTmp;
-            SERIAL_PRINT("max : ");
+            SERIAL_PRINT("CRC_DIG_2 : ");
             SERIAL_PRINTLN(testVal);
         }
     }
+    {
+        static uint8_t testVal = 0;
+        const auto testTmp = CrcLib::GetDigitalInput(CRC_DIG_3);
+        if(testVal != testTmp) {
+            testVal = testTmp;
+            SERIAL_PRINT("CRC_DIG_3 : ");
+            SERIAL_PRINTLN(testVal);
+        }
+    }
+    {
+        static uint8_t testVal = 0;
+        const auto testTmp = CrcLib::GetDigitalInput(CRC_DIG_4);
+        if(testVal != testTmp) {
+            testVal = testTmp;
+            SERIAL_PRINT("CRC_DIG_4 : ");
+            SERIAL_PRINTLN(testVal);
+        }
+    }
+    {
+        static uint8_t testVal = 0;
+        const auto testTmp = CrcLib::GetDigitalInput(CRC_DIG_5);
+        if(testVal != testTmp) {
+            testVal = testTmp;
+            SERIAL_PRINT("CRC_DIG_5 : ");
+            SERIAL_PRINTLN(testVal);
+        }
+    }
+    {
+        static uint8_t testVal = 0;
+        const auto testTmp = CrcLib::GetDigitalInput(CRC_DIG_4);
+        if(testVal != testTmp) {
+            testVal = testTmp;
+            SERIAL_PRINT("CRC_DIG_4 : ");
+            SERIAL_PRINTLN(testVal);
+        }
+    }
+    {
+        static uint8_t testVal = 0;
+        const auto testTmp = CrcLib::GetDigitalInput(CRC_DIG_5);
+        if(testVal != testTmp) {
+            testVal = testTmp;
+            SERIAL_PRINT("CRC_DIG_5 : ");
+            SERIAL_PRINTLN(testVal);
+        }
+    }
+    */
 
     const auto actions = Actions::lire(deltaTime);
 

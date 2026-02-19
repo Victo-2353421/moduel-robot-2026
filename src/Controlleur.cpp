@@ -80,7 +80,7 @@ void Controlleur::gererOuvertureFourches(const Actions &actions)
         }
     }
 
-    const bool limitMin = CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN) == HIGH;
+    const bool limitMin = CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN) == LOW;
     const bool limitMax = CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX) == HIGH;
     if ((ACTIVER_OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN && limitMin && (ouverture < 0)) ||
         (ACTIVER_OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX && limitMax && (0 < ouverture))) {
@@ -91,24 +91,21 @@ void Controlleur::gererOuvertureFourches(const Actions &actions)
 }
 
 void Controlleur::gererDELs(){
+    const bool limitOuvertureMax = CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX);
+    CrcLib::SetDigitalOutput(DEL_ROUGE_1, limitOuvertureMax);
+    CrcLib::SetDigitalOutput(DEL_ROUGE_2, limitOuvertureMax);
+    const bool limitOuvertureMin = !CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN);
+    CrcLib::SetDigitalOutput(DEL_BLANCHE_1, limitOuvertureMin);
+    CrcLib::SetDigitalOutput(DEL_BLANCHE_2, limitOuvertureMin);
+    
+    const bool avantGauche = (20 < CrcLib::GetAnalogInput(AVANT_GAUCHE_LIMIT_SWITCH));
+    const bool avantDroite = (20 < CrcLib::GetAnalogInput(AVANT_DROITE_LIMIT_SWITCH));
     CrcLib::SetDigitalOutput(
-        OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN_DEL,
-        CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN)
+        DEL_VERT_2,
+        avantGauche
     );
     CrcLib::SetDigitalOutput(
-        OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX_DEL,
-        CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX)
-    );
-    CrcLib::SetDigitalOutput(
-        OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL_DEL,
-        CrcLib::GetDigitalInput(OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL)
-    );
-    CrcLib::SetDigitalOutput(
-        TRANSLATION_LIMIT_SWITCH_MIN_DEL,
-        CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MIN)
-    );
-    CrcLib::SetDigitalOutput(
-        TRANSLATION_LIMIT_SWITCH_MAX_DEL,
-        CrcLib::GetDigitalInput(TRANSLATION_LIMIT_SWITCH_MAX)
+        DEL_VERT_1,
+        avantDroite
     );
 }

@@ -31,6 +31,11 @@ struct ControleVitesse {
     }
 
     int8_t obtenirDelta(US tempsAppuie, US deltaTime) const{
+        if (0 < tempsAppuie)
+            return 1;
+        else
+            return 0;
+        /*
         const float valeur =
             (static_cast<float>(tempsAppuie) / static_cast<float>(utils::MICROSECONDES_PAR_SECONDE) * acceleration + debutAcceleration)
             * (static_cast<float>(deltaTime) / static_cast<float>(utils::MICROSECONDES_PAR_SECONDE));
@@ -39,6 +44,7 @@ struct ControleVitesse {
             minVitesse,
             maxVitesse
         );
+        */
     }
 };
 

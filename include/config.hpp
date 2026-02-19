@@ -16,7 +16,7 @@ using US = uint32_t;
 // changer ceci de 1 ou 0 afin d'activer/désactiver le moniteur de série.
 // Le moniteur de série peut causer beaucoup de latence. C'est utile pour le
 // débogage mais ÇA DOIT _ABSOLUMENT_ ÊTRE DÉSACTIVÉ LORS DE LA COMPÉTITION.
-#define SERIAL_ENABLE 1
+#define SERIAL_ENABLE 0
 
 /******************************************/
 /*          Contrôles des roues.          */
@@ -78,22 +78,29 @@ constexpr bool ATIVER_OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL = true;
 constexpr Pin OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL = CRC_DIG_3;
 
 // La vitesse d'accélération de l'ouverture
-constexpr float OUVERTURE_FOURCHE_ACCELERATION = 64.0f;
+constexpr float OUVERTURE_FOURCHE_ACCELERATION = 92.0f;
 // Lorsqu'on commence à appuyer sur la touche d'ouverture, la vitesse à laquelle l'ouverture commence
-constexpr float OUVERTURE_FOURCHE_ACCELERATION_INITIALE = 16.0f;
+constexpr float OUVERTURE_FOURCHE_ACCELERATION_INITIALE = 32.0f;
 constexpr int8_t OUVERTURE_FOURCHE_VITESSE_MIN = -128;
 constexpr int8_t OUVERTURE_FOURCHE_VITESSE_MAX = 127;
 
 
 /******************************************/
+/*         Accotement de l'avant          */
+/******************************************/
+constexpr Pin AVANT_GAUCHE_LIMIT_SWITCH = CRC_ANA_1;
+constexpr Pin AVANT_DROITE_LIMIT_SWITCH = CRC_ANA_2;
+
+
+/******************************************/
 /*            mapping des DEL             */
 /******************************************/
-constexpr Pin OUVERTURE_FOURCHE_LIMIT_SWITCH_MIN_DEL = CRC_DIG_7;
-constexpr Pin OUVERTURE_FOURCHE_LIMIT_SWITCH_MAX_DEL = CRC_DIG_8;
-constexpr Pin OUVERTURE_FOURCHE_LIMIT_SWITCH_SIGNAL_DEL = CRC_DIG_9;
-constexpr Pin TRANSLATION_LIMIT_SWITCH_MIN_DEL = CRC_DIG_10;
-constexpr Pin TRANSLATION_LIMIT_SWITCH_MAX_DEL = CRC_DIG_11;
-
+constexpr Pin DEL_ROUGE_1 = CRC_DIG_9;
+constexpr Pin DEL_ROUGE_2 = CRC_DIG_10;
+constexpr Pin DEL_BLANCHE_1 = CRC_DIG_12;
+constexpr Pin DEL_BLANCHE_2 = CRC_DIG_7;
+constexpr Pin DEL_VERT_1 = CRC_DIG_8;
+constexpr Pin DEL_VERT_2 = CRC_DIG_11;
 
 
 #endif // CONFIG_HPP
