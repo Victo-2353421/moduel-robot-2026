@@ -20,7 +20,7 @@ struct Actions {
     int8_t translation{};
 
     // Le *delta* de rotation des fourches.
-    int8_t deltaRotationFourches{};
+    float deltaRotationFourches{};
 
     // La *vitesse* de l'ouverture des fourches.
     int8_t vitesseOuvertureFourches{};

@@ -13,7 +13,7 @@ public:
 
     void gererTranslation(const Actions& actions);
 
-    int8_t rotationFourches = 0;
+    float rotationFourches = 0;
     void gererRotationFourches(const Actions& actions);
 
     bool signalArretFermeture = false;

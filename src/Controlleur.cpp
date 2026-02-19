@@ -50,14 +50,13 @@ void Controlleur::gererTranslation(const Actions &actions)
 
 void Controlleur::gererRotationFourches(const Actions &actions)
 {
-    int8_t deltaRotation = actions.deltaRotationFourches;
+    float deltaRotation = actions.deltaRotationFourches;
 
-    rotationFourches = utils::conversionClamp<int16_t, int8_t>(
+    rotationFourches = utils::conversionClamp<float, float>(
         rotationFourches + deltaRotation,
         ANGLE_FOURCHE_MINIMAL,
         ANGLE_FOURCHE_MAXIMAL
     );
-
     CrcLib::SetPwmOutput(ANGLE_FOURCHE_GAUCHE_SERVO_PIN, rotationFourches);
     CrcLib::SetPwmOutput(ANGLE_FOURCHE_DROITE_SERVO_PIN, rotationFourches);
 }
