@@ -54,9 +54,9 @@ constexpr int8_t ANGLE_FOURCHE_MINIMAL = -70; // angle de rotation minimale.
 constexpr int8_t ANGLE_FOURCHE_MAXIMAL = 70; // angle de rotation maximale.
 
 // La vitesse d'accélération de la rotation
-constexpr float ANGLE_FOURCHE_ACCELERATION = 500.0f;
+constexpr float ANGLE_FOURCHE_ACCELERATION = 550.0f;
 // Lorsqu'on commence à appuyer sur la touche de rotation, la vitesse à laquelle la rotation commence
-constexpr float ANGLE_FOURCHE_ACCELERATION_INITIALE = 40.f;
+constexpr float ANGLE_FOURCHE_ACCELERATION_INITIALE = 60.f;
 constexpr int8_t ANGLE_FOURCHE_VITESSE_MIN = -128;
 constexpr int8_t ANGLE_FOURCHE_VITESSE_MAX = 127;
 

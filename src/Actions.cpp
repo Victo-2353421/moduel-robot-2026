@@ -22,7 +22,7 @@ struct ControleVitesse {
     int8_t obtenirVitesse(US tempsAppuie) const{
         const float valeur =
             ceilf(static_cast<float>(tempsAppuie) / static_cast<float>(utils::MICROSECONDES_PAR_SECONDE))
-            * acceleration + debutAcceleration;
+            * acceleration * acceleration + debutAcceleration;
         return utils::conversionClamp<float, int8_t>(
             valeur,
             minVitesse,
