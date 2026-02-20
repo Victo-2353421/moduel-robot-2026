@@ -163,8 +163,8 @@ static ControleManette controleManette;
  */
 int8_t mappingVitesseAnalogue(int8_t valeurManette){
     float valeurManetteF = static_cast<float>(valeurManette);
-    utils::conversionClamp<float, int8_t>(
-        0.00788f * valeurManetteF * valeurManetteF,
+    return utils::conversionClamp<float, int8_t>(
+        0.00788f * valeurManetteF * abs(valeurManetteF),
         -128,
         127
     );
