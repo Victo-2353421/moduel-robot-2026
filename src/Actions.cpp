@@ -154,20 +154,38 @@ struct ControleManette {
 };
 static ControleManette controleManette;
 
+/**
+ * Donne un mapping de vitesse exponentiel.
+ * La valeur 0.00788f a été choisie avec l'aide de Desmos pour que 127 de
+ * valeurManette donne 127 comme résultat.
+ * LA FONCTION DOIT ÊTRE TESTÉ PARCE QUE J'AI PAS ACCÈS AU ROBOT.
+ * Vous pouvez ajuster
+ */
+int8_t mappingVitesseAnalogue(int8_t valeurManette){
+    float valeurManetteF = static_cast<float>(valeurManette);
+    utils::conversionClamp<float, int8_t>(
+        0.00788f * valeurManetteF * valeurManetteF,
+        -128,
+        127
+    );
+}
+
 Actions Actions::lire(US deltaTime)
 {
     controleManette.lire(deltaTime);
     //controleManette.print();
     Actions actions;
 
-    actions.avant = controleManette.joystick1y;
-    actions.lacet = controleManette.joystick2x;
-    actions.lateral = controleManette.joystick1x;
+    actions.avant = mappingVitesseAnalogue(controleManette.joystick1y);
+    actions.lacet = mappingVitesseAnalogue(controleManette.joystick2x);
+    actions.lateral = mappingVitesseAnalogue(controleManette.joystick1x);
 
-    actions.translation = utils::conversionClamp<int16_t, int8_t>(
-        controleManette.gachetteDroite - controleManette.gachetteGauche,
-        -128,
-        127
+    actions.translation = mappingVitesseAnalogue(
+        utils::conversionClamp<int16_t, int8_t>(
+            controleManette.gachetteDroite - controleManette.gachetteGauche,
+            -128,
+            127
+        )
     );
 
     if(controleManette.a && !controleManette.x) {
